@@ -434,7 +434,7 @@
     <div>• Срок брони места: <b>10 дней</b> (п. 3.6)</div>
     <div>• Подача списков деканатами: до <b>20 августа</b> (п. 5.2.1)</div>
     <div>• Выселение при академе / отчислении: <b>3 дня</b> (п. 2.8)</div>
-    <div>• Отсутствие без предупреждения: ><b>14 дней</b> (п. 10.3)</div>
+    <div>• Отсутствие без предупреждения: &gt;<b>14 дней</b> (п. 10.3)</div>
   </div>
 </header>
 
@@ -474,18 +474,15 @@ const STORAGE_KEY = 'nstu_dorm6_wide_v2';
 const INITIAL_STATE = {
   role: 'directorate',
   activeTab: 'dashboard',
-  // Upgraded forecast state
   forecastMale: 0,
   forecastFemale: 0,
   fcUseGraduates: false,
   fcUseReclaim: false,
   fcUseRepair: false,
-  // Search tab filters
   searchQuery: '',
   filterFaculty: 'all',
   filterEduLevel: 'all',
   filterStatus: 'all',
-  // Applications tab filters
   appSearch: '',
   appBenefitFilter: 'all',
   appPriorityFilter: 'all',
@@ -568,12 +565,24 @@ const INITIAL_STATE = {
 
 let state = loadState();
 function loadState() {
-  try { const raw = localStorage.getItem(STORAGE_KEY); if (raw) return JSON.parse(raw); } catch (e) {}
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
   return JSON.parse(JSON.stringify(INITIAL_STATE));
 }
-function saveState() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {} }
-function resetDemo() { state = JSON.parse(JSON.stringify(INITIAL_STATE)); saveState(); render(); showToast('Демо-данные восстановлены'); }
-function esc(s) { return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&','<':'<','>':'>','"':'"',"'":'''}[m])); }
+function saveState() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+}
+function resetDemo() {
+  state = JSON.parse(JSON.stringify(INITIAL_STATE));
+  saveState();
+  render();
+  showToast('Демо-данные восстановлены');
+}
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
 function formatShortName(fio) {
   const p = String(fio ?? '').trim().split(/\s+/);
   if (p.length >= 3) return `${p[0]} ${p[1][0]}.${p[2][0]}.`;
@@ -624,7 +633,9 @@ function addLog(text) {
   if (state.logs.length > 25) state.logs.pop();
 }
 function showToast(msg) {
-  const el = document.getElementById('toast'); el.textContent = msg; el.classList.add('show');
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
   setTimeout(() => el.classList.remove('show'), 2600);
 }
 function switchTab(tab) { state.activeTab = tab; saveState(); render(); }
@@ -632,7 +643,8 @@ function switchTab(tab) { state.activeTab = tab; saveState(); render(); }
 document.getElementById('roleSelect').addEventListener('change', e => {
   state.role = e.target.value;
   state.filterFaculty = state.role === 'dean' ? 'АВТФ' : 'all';
-  saveState(); render();
+  saveState();
+  render();
   showToast('Режим: ' + e.target.options[e.target.selectedIndex].text);
 });
 
@@ -662,7 +674,6 @@ function render() {
   else if (state.activeTab === 'quotas') m.innerHTML = renderQuotas();
 }
 
-/* ================= DASHBOARD ================= */
 function getForecastMetrics() {
   const freeM = state.rooms.filter(r => r.gender === 'М').reduce((a, r) => a + getFreeBeds(r), 0);
   const freeF = state.rooms.filter(r => r.gender === 'Ж').reduce((a, r) => a + getFreeBeds(r), 0);
@@ -725,7 +736,7 @@ function buildForecastHtml() {
         </tr>
       </tbody>
     </table>
-    ${(balM < 0 || balF < 0) ? `<div style="margin-top:6px;font-size:11px;color:var(--red);">Нехватка мест по полу: проверьте резервы выше или перераспределите квоты / блоки между полами.</div>` : ''}`;
+    ${(balM < 0 || balF < 0) ? '<div style="margin-top:6px;font-size:11px;color:var(--red);">Нехватка мест по полу: проверьте резервы выше или перераспределите квоты / блоки между полами.</div>' : ''}`;
 }
 
 function updateForecastField(field, val) {
@@ -875,7 +886,6 @@ function renderDashboard() {
     </div>`;
 }
 
-/* ================= SEARCH ================= */
 function renderSearch() {
   const visStud = getVisibleStudents();
   const facs = [...new Set(visStud.map(s => s.faculty))];
@@ -942,7 +952,6 @@ function buildSearchRows() {
   }).join('');
 }
 
-/* ================= FLOOR MAP ================= */
 function renderMap() {
   const blocks = [...new Set(state.rooms.map(r => r.block))];
   return `
@@ -986,8 +995,8 @@ function renderMap() {
               });
               for (let i = 0; i < r.capacity - occ.length; i++) {
                 bedsHtml += r.condition === 'Авария (ремонт)'
-                  ? `<div class="bed bed-rep">Закрыто (ремонт)</div>`
-                  : `<div class="bed bed-free">Свободно</div>`;
+                  ? '<div class="bed bed-rep">Закрыто (ремонт)</div>'
+                  : '<div class="bed bed-free">Свободно</div>';
               }
               const deanHL = state.role === 'dean' && r.quotaTag === 'АВТФ' ? 'is-dean-hl' : '';
               return `<div class="room-card ${r.condition !== 'Норма' ? 'is-repair' : fr > 0 ? 'is-free' : ''} ${deanHL}" onclick="openRoomModal('${r.id}')">
@@ -1005,7 +1014,6 @@ function renderMap() {
     </div>`;
 }
 
-/* ================= REPAIRS ================= */
 function renderRepairs() {
   const problemRooms = state.rooms.filter(r => r.condition !== 'Норма');
   const normRooms = state.rooms.filter(r => r.condition === 'Норма');
@@ -1051,7 +1059,6 @@ function renderRepairs() {
     </div>` : ''}`;
 }
 
-/* ================= QUOTAS & APPLICATIONS (SWAPPED + STICKY + FILTERS) ================= */
 function buildAppRows() {
   const canAssign = state.role === 'directorate' || state.role === 'dean';
   const q = state.appSearch.trim().toLowerCase();
@@ -1118,7 +1125,6 @@ function renderQuotas() {
       <div><h1 class="page-title">Квоты факультетов и поступившие заявления</h1><div class="page-desc">Контроль квот до 20 августа (п. 5.2.1) и приоритетная обработка заявлений из ЛК (п. 2.3, 4.1.1)</div></div>
     </div>
     <div class="quotas-grid">
-      <!-- LEFT: Applications list with filters -->
       <div class="panel">
         <div class="panel-head">
           <span>Поступившие заявления из ЛК</span>
@@ -1163,7 +1169,6 @@ function renderQuotas() {
         </div>
       </div>
 
-      <!-- RIGHT TOP (STICKY): Quota Balance -->
       <div class="panel sticky-panel">
         <div class="panel-head">
           <span>Баланс квот (Этаж 3)</span>
@@ -1191,7 +1196,6 @@ function renderQuotas() {
     </div>`;
 }
 
-/* ================= MODALS ================= */
 function openStudentModal(id) {
   const s = state.students.find(x => x.id === id); if (!s) return;
   const r = getRoom(s.roomId);
@@ -1229,7 +1233,7 @@ function openStudentModal(id) {
         <span style="font-size:11.5px;color:var(--muted)">Деканат может инициировать обращение в Дирекцию студгородка:</span>
         <button class="btn btn-outline btn-xs" onclick="deanRequest('${s.id}')">Направить запрос в студгородок</button>
       </div>` :
-      `<div style="font-size:11.5px;color:var(--muted);border-top:1px solid var(--border-light);padding-top:8px;">Режим проректората: только просмотр данных.</div>`
+      '<div style="font-size:11.5px;color:var(--muted);border-top:1px solid var(--border-light);padding-top:8px;">Режим проректората: только просмотр данных.</div>'
     }`;
   document.getElementById('modalBackdrop').classList.add('open');
 }
@@ -1294,7 +1298,6 @@ function openAssignModal(appId) {
   document.getElementById('modalBackdrop').classList.add('open');
 }
 
-/* ================= ACTIONS ================= */
 function closeModal() { document.getElementById('modalBackdrop').classList.remove('open'); }
 function deanRequest(id) {
   const s = state.students.find(x => x.id === id);
