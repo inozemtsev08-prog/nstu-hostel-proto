@@ -107,7 +107,7 @@
       margin-bottom: 1px;
     }
 
-    /* Horizontal Navigation Bar (100% width workspace) */
+    /* Horizontal Navigation Bar */
     .nav-bar {
       background: var(--bg-soft);
       border-bottom: 1px solid var(--border);
@@ -146,7 +146,7 @@
     .nav-btn.active .nav-badge { background: rgba(255,255,255,0.25); color: #fff; }
     .nav-badge.warn { background: var(--red-bg); color: var(--red); }
 
-    /* Main Content (Full width) */
+    /* Main Content */
     .main { padding: 12px 16px; width: 100%; }
     .breadcrumbs { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
     .page-header {
@@ -181,10 +181,10 @@
     .btn-outline:hover { background: #f3f4f6; }
     .btn-xs { padding: 2px 7px; font-size: 11px; }
 
-    /* Compact KPI strip */
+    /* Compact KPI strip (5 separate cells) */
     .kpi-strip {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       border: 1px solid var(--border);
       background: #fafafa;
       margin-bottom: 10px;
@@ -203,8 +203,9 @@
     .kpi-sub { font-size: 11px; color: var(--muted); }
 
     /* Grids & Panels */
-    .dash-grid { display: grid; grid-template-columns: 1.55fr 1fr; gap: 12px; align-items: start; }
-    .quotas-grid { display: grid; grid-template-columns: 0.75fr 1.45fr; gap: 12px; align-items: start; }
+    .dash-grid { display: grid; grid-template-columns: 1.45fr 1.05fr; gap: 12px; align-items: start; }
+    .quotas-grid { display: grid; grid-template-columns: 1.55fr 0.85fr; gap: 12px; align-items: start; }
+    .sticky-panel { position: sticky; top: 12px; }
     .panel {
       border: 1px solid var(--border);
       background: #fff;
@@ -222,7 +223,37 @@
       gap: 8px;
     }
     .panel-body { padding: 9px 10px; }
-    .scroll-box { max-height: 390px; overflow-y: auto; }
+    .scroll-box { max-height: 440px; overflow-y: auto; }
+
+    /* Forecast controls */
+    .fc-row {
+      display: grid;
+      grid-template-columns: 110px 1fr 58px;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+      font-size: 12px;
+    }
+    .fc-checks {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin: 8px 0;
+      padding: 7px 8px;
+      background: #f9fafb;
+      border: 1px solid var(--border-light);
+      font-size: 11.5px;
+    }
+    .fc-checks label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .fc-summary-table th, .fc-summary-table td {
+      padding: 4px 6px;
+      font-size: 11.5px;
+    }
 
     /* Tags */
     .tag {
@@ -240,16 +271,16 @@
     .t-gray { background: #f3f4f6; color: #4b5563; border-color: #d1d5db; }
 
     /* Dense Tables */
-    .toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; align-items: center; }
     .input, .select {
       padding: 5px 8px;
       border: 1px solid var(--border);
-      font-size: 12.5px;
+      font-size: 12px;
       background: #fff;
       color: var(--text);
     }
     .input:focus, .select:focus { outline: 1px solid var(--green); border-color: var(--green); }
-    .input-grow { flex: 1; min-width: 240px; }
+    .input-grow { flex: 1; min-width: 210px; }
 
     table { width: 100%; border-collapse: collapse; }
     th, td {
@@ -282,7 +313,7 @@
     .act-row.prio-amber { border-left: 3px solid var(--amber); background: #fffdf7; }
     .act-row.prio-red { border-left: 3px solid var(--red); background: #fffafa; }
 
-    /* Floor Map (Full width, clear Фамилия И.О.) */
+    /* Floor Map */
     .blocks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(410px, 1fr)); gap: 10px; }
     .block-card { border: 1px solid var(--border); background: #fff; }
     .block-card.has-issue { border-color: #f3a69f; }
@@ -334,7 +365,7 @@
     }
     .modal-bg.open { display: flex; }
     .modal {
-      background: #fff; width: 100%; max-width: 560px; max-height: 90vh;
+      background: #fff; width: 100%; max-width: 580px; max-height: 90vh;
       overflow-y: auto; padding: 16px; border: 1px solid var(--border);
     }
     .modal-top {
@@ -353,8 +384,9 @@
     }
     .toast.show { display: block; }
 
-    @media (max-width: 960px) {
+    @media (max-width: 1024px) {
       .dash-grid, .quotas-grid, .kpi-strip, .info-grid, .blocks-grid { grid-template-columns: 1fr; }
+      .sticky-panel { position: static; }
       .kpi-cell { border-right: none; border-bottom: 1px solid var(--border-light); }
       .top-info-panel { grid-template-columns: 1fr; }
     }
@@ -381,7 +413,6 @@
 
 <header class="site-header">
   <div class="logo-wrap">
-    <!-- Точный логотип НГТУ НЭТИ -->
     <svg width="34" height="34" viewBox="0 0 100 100" fill="none" aria-hidden="true">
       <rect width="100" height="100" fill="#00a859"/>
       <polygon points="0,0 100,0 28,28 0,36" fill="#6b132e"/>
@@ -398,13 +429,12 @@
     </div>
   </div>
 
-  <!-- Панель с информацией сверху справа -->
   <div class="top-info-panel">
     <div class="top-info-title">Памятка по регламентам НГТУ</div>
     <div>• Срок брони места: <b>10 дней</b> (п. 3.6)</div>
     <div>• Подача списков деканатами: до <b>20 августа</b> (п. 5.2.1)</div>
     <div>• Выселение при академе / отчислении: <b>3 дня</b> (п. 2.8)</div>
-    <div>• Отсутствие без предупреждения: &gt;<b>14 дней</b> (п. 10.3)</div>
+    <div>• Отсутствие без предупреждения: ><b>14 дней</b> (п. 10.3)</div>
   </div>
 </header>
 
@@ -439,15 +469,27 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const STORAGE_KEY = 'nstu_dorm6_wide_v1';
+const STORAGE_KEY = 'nstu_dorm6_wide_v2';
 
 const INITIAL_STATE = {
   role: 'directorate',
   activeTab: 'dashboard',
-  planIncrease: 0,
+  // Upgraded forecast state
+  forecastMale: 0,
+  forecastFemale: 0,
+  fcUseGraduates: false,
+  fcUseReclaim: false,
+  fcUseRepair: false,
+  // Search tab filters
   searchQuery: '',
   filterFaculty: 'all',
+  filterEduLevel: 'all',
   filterStatus: 'all',
+  // Applications tab filters
+  appSearch: '',
+  appBenefitFilter: 'all',
+  appPriorityFilter: 'all',
+  appSort: 'priority',
   faculties: [
     { name: 'АВТФ', quota: 32, note: 'Профильный факультет общ. № 6 (п. 1.3.1)' },
     { name: 'ЦМО (Иностранцы)', quota: 8, note: 'Резервная квота (п. 3.1.2)' },
@@ -474,38 +516,45 @@ const INITIAL_STATE = {
     { id: 'r306c', block: 'Блок 306', number: '306В', capacity: 3, gender: 'М', condition: 'Норма', quotaTag: 'АВТФ', repairNote: '' }
   ],
   students: [
-    { id: 's1', fio: 'Соколов Артём Дмитриевич', faculty: 'АВТФ', course: 1, group: 'АВТ-612', studyForm: 'Бюджет', rating: 246, gender: 'М', benefit: 'Нет', roomId: 'r301a', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/26-014', notes: 'Заселён по квоте 1 курса' },
-    { id: 's2', fio: 'Мельников Егор Сергеевич', faculty: 'АВТФ', course: 2, group: 'АВТ-511', studyForm: 'Бюджет', rating: 4.72, gender: 'М', benefit: 'Староста этажа', roomId: 'r301a', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/25-108', notes: 'Освобождён от оплаты на семестр (п. 7.2.7)' },
-    { id: 's3', fio: 'Фёдоров Илья Максимович', faculty: 'АВТФ', course: 1, group: 'АВТ-614', studyForm: 'Контракт', rating: 215, gender: 'М', benefit: 'Нет', roomId: 'r301a', status: 'Бронь', bookingDaysLeft: 1, contractNo: 'БР-26-091', notes: 'Остался 1 день до истечения 10-дневной брони (п. 3.6)' },
-    { id: 's4', fio: 'Борисов Никита Олегович', faculty: 'АВТФ', course: 3, group: 'АВТ-410', studyForm: 'Бюджет', rating: 4.30, gender: 'М', benefit: 'Нет', roomId: 'r301b', status: 'Не ночует >14 дн.', bookingDaysLeft: null, contractNo: 'Д-6/24-211', notes: 'Отсутствует 18 дней без предупреждения (п. 10.3)' },
-    { id: 's5', fio: 'Кузнецов Даниил Павлович', faculty: 'АВТФ', course: 2, group: 'АВТ-513', studyForm: 'Бюджет', rating: 4.55, gender: 'М', benefit: 'Сирота', roomId: 'r301c', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/25-032', notes: 'Освобождён от оплаты (п. 7.1.3)' },
-    { id: 's6', fio: 'Зайцев Кирилл Андреевич', faculty: 'АВТФ', course: 4, group: 'АВТ-311', studyForm: 'Бюджет', rating: 3.90, gender: 'М', benefit: 'Нет', roomId: 'r301c', status: 'К выселению (3 дня)', bookingDaysLeft: null, contractNo: 'Д-6/23-087', notes: 'Приказ об академическом отпуске — освобождение за 3 дня (п. 2.11)' },
-    { id: 's7', fio: 'Волкова Анна Михайловна', faculty: 'АВТФ', course: 1, group: 'АВТ-611', studyForm: 'Бюджет', rating: 254, gender: 'Ж', benefit: 'Нет', roomId: 'r302a', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/26-021', notes: '' },
-    { id: 's8', fio: 'Орлова Дарья Алексеевна', faculty: 'АВТФ', course: 2, group: 'АВТ-512', studyForm: 'Бюджет', rating: 4.85, gender: 'Ж', benefit: 'Нет', roomId: 'r302a', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/25-140', notes: '' },
-    { id: 's9', fio: 'Романова Ксения Ивановна', faculty: 'АВТФ', course: 1, group: 'АВТ-615', studyForm: 'Контракт', rating: 218, gender: 'Ж', benefit: 'Нет', roomId: 'r302b', status: 'Бронь', bookingDaysLeft: -2, contractNo: 'БР-26-077', notes: 'Бронь просрочена (12 дней из 10) — подлежит возврату в фонд' },
-    { id: 's10', fio: 'Лебедева Мария Викторовна', faculty: 'АВТФ', course: 3, group: 'АВТ-412', studyForm: 'Бюджет', rating: 4.40, gender: 'Ж', benefit: 'Инвалид II гр.', roomId: 'r302b', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/24-019', notes: 'Освобождена от оплаты' },
-    { id: 's11', fio: 'Громова Алина Игоревна', faculty: 'ФПМИ', course: 2, group: 'ПМИ-51', studyForm: 'Бюджет', rating: 4.60, gender: 'Ж', benefit: 'Нет', roomId: 'r302c', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/25-203', notes: '' },
-    { id: 's12', fio: 'Тихонова Полина Евгеньевна', faculty: 'ФПМИ', course: 2, group: 'ПМИ-52', studyForm: 'Бюджет', rating: 4.45, gender: 'Ж', benefit: 'Нет', roomId: 'r302c', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/25-204', notes: '' },
-    { id: 's13', fio: 'Павлов Роман Денисович', faculty: 'АВТФ', course: 2, group: 'АВТ-514', studyForm: 'Бюджет', rating: 4.15, gender: 'М', benefit: 'Нет', roomId: 'r303a', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/25-177', notes: 'Комната требует ремонта (течь стояка)' },
-    { id: 's14', fio: 'Егоров Тимофей Антонович', faculty: 'АВТФ', course: 3, group: 'АВТ-413', studyForm: 'Контракт', rating: 3.75, gender: 'М', benefit: 'Нет', roomId: 'r303a', status: 'Задолженность', bookingDaysLeft: null, contractNo: 'Д-6/24-188', notes: 'Задолженность по оплате более 3 месяцев (п. 10.3)' },
-    { id: 's15', fio: 'Сидоров Владислав Юрьевич', faculty: 'АВТФ', course: 1, group: 'АВТ-616', studyForm: 'Бюджет', rating: 232, gender: 'М', benefit: 'Нет', roomId: 'r303b', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/26-064', notes: '' },
-    { id: 's16', fio: 'Морозов Денис Васильевич', faculty: 'АВТФ', course: 2, group: 'АВТ-515', studyForm: 'Бюджет', rating: 4.25, gender: 'М', benefit: 'Нет', roomId: 'r303c', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/25-112', notes: '' },
-    { id: 's17', fio: 'Козлов Максим Артёмович', faculty: 'АВТФ', course: 2, group: 'АВТ-515', studyForm: 'Бюджет', rating: 4.10, gender: 'М', benefit: 'Нет', roomId: 'r303c', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/25-113', notes: '' },
-    { id: 's18', fio: 'Нгуен Минь Туан', faculty: 'ЦМО (Иностранцы)', course: 1, group: 'АВТ-618и', studyForm: 'Контракт', rating: 4.50, gender: 'М', benefit: 'Нет', roomId: 'r304a', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/26-301', notes: 'Миграционный учёт ЦМО' },
-    { id: 's19', fio: 'Чжан Вэй', faculty: 'ЦМО (Иностранцы)', course: 2, group: 'АВТ-519и', studyForm: 'Контракт', rating: 4.35, gender: 'М', benefit: 'Нет', roomId: 'r304a', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/25-305', notes: 'Миграционный учёт ЦМО' },
-    { id: 's20', fio: 'Ахмедов Рустам Алишер оглы', faculty: 'ЦМО (Иностранцы)', course: 1, group: 'ПО-12', studyForm: 'Бюджет', rating: 4.65, gender: 'М', benefit: 'Нет', roomId: 'r304a', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/26-309', notes: '' },
-    { id: 's21', fio: 'Ли Сяолун', faculty: 'ЦМО (Иностранцы)', course: 1, group: 'ПО-14', studyForm: 'Контракт', rating: 4.20, gender: 'М', benefit: 'Нет', roomId: 'r304b', status: 'Бронь', bookingDaysLeft: 6, contractNo: 'БР-26-104', notes: 'Ожидает прибытия (6 дн. из 10)' },
-    { id: 's22', fio: 'Смирнова Екатерина Олеговна', faculty: 'АВТФ', course: 1, group: 'АВТ-613', studyForm: 'Бюджет', rating: 241, gender: 'Ж', benefit: 'Нет', roomId: 'r305a', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/26-045', notes: '' },
-    { id: 's23', fio: 'Новикова Ольга Сергеевна', faculty: 'АВТФ', course: 3, group: 'АВТ-414', studyForm: 'Бюджет', rating: 4.70, gender: 'Ж', benefit: 'Нет', roomId: 'r305a', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/24-099', notes: '' },
-    { id: 's24', fio: 'Соловьёва Виктория Романовна', faculty: 'АВТФ', course: 2, group: 'АВТ-516', studyForm: 'Бюджет', rating: 4.33, gender: 'Ж', benefit: 'Нет', roomId: 'r305b', status: 'Не ночует >14 дн.', bookingDaysLeft: null, contractNo: 'Д-6/25-161', notes: 'Отсутствует 21 день, требуется проверка коменданта' },
-    { id: 's25', fio: 'Карпова Елизавета Павловна', faculty: 'ФЭН', course: 3, group: 'ЭН-42', studyForm: 'Бюджет', rating: 4.52, gender: 'Ж', benefit: 'Нет', roomId: 'r305c', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/24-250', notes: '' },
-    { id: 's26', fio: 'Васильев Игорь Станиславович', faculty: 'АВТФ', course: 1, group: 'АВТ-617', studyForm: 'Бюджет', rating: 229, gender: 'М', benefit: 'Нет', roomId: 'r306a', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/26-082', notes: '' },
-    { id: 's27', fio: 'Степанов Андрей Николаевич', faculty: 'АВТФ', course: 2, group: 'АВТ-517', studyForm: 'Бюджет', rating: 4.05, gender: 'М', benefit: 'Ветеран боевых действий', roomId: 'r306c', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/25-011', notes: 'Освобождён от оплаты (п. 7.1.5)' }
+    { id: 's1', fio: 'Соколов Артём Дмитриевич', faculty: 'АВТФ', eduLevel: 'Бакалавриат', course: 1, studyMode: 'Очная', group: 'АВТ-612', studyForm: 'Бюджет', rating: 246, gender: 'М', benefit: 'Нет', roomId: 'r301a', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/26-014', notes: 'Заселён по квоте 1 курса' },
+    { id: 's2', fio: 'Мельников Егор Сергеевич', faculty: 'АВТФ', eduLevel: 'Бакалавриат', course: 4, studyMode: 'Очная', group: 'АВТ-311', studyForm: 'Бюджет', rating: 4.72, gender: 'М', benefit: 'Староста этажа', roomId: 'r301a', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/23-108', notes: 'Выпускной курс; освобождён от оплаты на семестр (п. 7.2.7)' },
+    { id: 's3', fio: 'Фёдоров Илья Максимович', faculty: 'АВТФ', eduLevel: 'Бакалавриат', course: 1, studyMode: 'Очная', group: 'АВТ-614', studyForm: 'Контракт', rating: 215, gender: 'М', benefit: 'Нет', roomId: 'r301a', status: 'Бронь', bookingDaysLeft: 1, contractNo: 'БР-26-091', notes: 'Остался 1 день до истечения 10-дневной брони (п. 3.6)' },
+    { id: 's4', fio: 'Борисов Никита Олегович', faculty: 'АВТФ', eduLevel: 'Бакалавриат', course: 3, studyMode: 'Очная', group: 'АВТ-410', studyForm: 'Бюджет', rating: 4.30, gender: 'М', benefit: 'Нет', roomId: 'r301b', status: 'Не ночует >14 дн.', bookingDaysLeft: null, contractNo: 'Д-6/24-211', notes: 'Отсутствует 18 дней без предупреждения (п. 10.3)' },
+    { id: 's5', fio: 'Кузнецов Даниил Павлович', faculty: 'АВТФ', eduLevel: 'Бакалавриат', course: 2, studyMode: 'Очная', group: 'АВТ-513', studyForm: 'Бюджет', rating: 4.55, gender: 'М', benefit: 'Сирота', roomId: 'r301c', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/25-032', notes: 'Освобождён от оплаты (п. 7.1.3)' },
+    { id: 's6', fio: 'Зайцев Кирилл Андреевич', faculty: 'АВТФ', eduLevel: 'Бакалавриат', course: 4, studyMode: 'Очная', group: 'АВТ-311', studyForm: 'Бюджет', rating: 3.90, gender: 'М', benefit: 'Нет', roomId: 'r301c', status: 'К выселению (3 дня)', bookingDaysLeft: null, contractNo: 'Д-6/23-087', notes: 'Приказ об академическом отпуске — освобождение за 3 дня (п. 2.11)' },
+    { id: 's7', fio: 'Волкова Анна Михайловна', faculty: 'АВТФ', eduLevel: 'Бакалавриат', course: 1, studyMode: 'Очная', group: 'АВТ-611', studyForm: 'Бюджет', rating: 254, gender: 'Ж', benefit: 'Нет', roomId: 'r302a', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/26-021', notes: '' },
+    { id: 's8', fio: 'Орлова Дарья Алексеевна', faculty: 'АВТФ', eduLevel: 'Магистратура', course: 2, studyMode: 'Очная', group: 'АВТМ-51', studyForm: 'Бюджет', rating: 4.85, gender: 'Ж', benefit: 'Нет', roomId: 'r302a', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/25-140', notes: 'Выпускной курс магистратуры' },
+    { id: 's9', fio: 'Романова Ксения Ивановна', faculty: 'АВТФ', eduLevel: 'Бакалавриат', course: 1, studyMode: 'Очная', group: 'АВТ-615', studyForm: 'Контракт', rating: 218, gender: 'Ж', benefit: 'Нет', roomId: 'r302b', status: 'Бронь', bookingDaysLeft: -2, contractNo: 'БР-26-077', notes: 'Бронь просрочена (12 дней из 10) — подлежит возврату в фонд' },
+    { id: 's10', fio: 'Лебедева Мария Викторовна', faculty: 'АВТФ', eduLevel: 'Бакалавриат', course: 3, studyMode: 'Очная', group: 'АВТ-412', studyForm: 'Бюджет', rating: 4.40, gender: 'Ж', benefit: 'Инвалид II гр.', roomId: 'r302b', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/24-019', notes: 'Освобождена от оплаты' },
+    { id: 's11', fio: 'Громова Алина Игоревна', faculty: 'ФПМИ', eduLevel: 'Бакалавриат', course: 4, studyMode: 'Очная', group: 'ПМИ-31', studyForm: 'Бюджет', rating: 4.60, gender: 'Ж', benefit: 'Нет', roomId: 'r302c', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/23-203', notes: 'Выпускной курс' },
+    { id: 's12', fio: 'Тихонова Полина Евгеньевна', faculty: 'ФПМИ', eduLevel: 'Бакалавриат', course: 2, studyMode: 'Очная', group: 'ПМИ-52', studyForm: 'Бюджет', rating: 4.45, gender: 'Ж', benefit: 'Нет', roomId: 'r302c', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/25-204', notes: '' },
+    { id: 's13', fio: 'Павлов Роман Денисович', faculty: 'АВТФ', eduLevel: 'Магистратура', course: 2, studyMode: 'Очная', group: 'АВТМ-52', studyForm: 'Бюджет', rating: 4.15, gender: 'М', benefit: 'Нет', roomId: 'r303a', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/25-177', notes: 'Выпускной курс; комната требует ремонта (течь стояка)' },
+    { id: 's14', fio: 'Егоров Тимофей Антонович', faculty: 'АВТФ', eduLevel: 'Бакалавриат', course: 3, studyMode: 'Очная', group: 'АВТ-413', studyForm: 'Контракт', rating: 3.75, gender: 'М', benefit: 'Нет', roomId: 'r303a', status: 'Задолженность', bookingDaysLeft: null, contractNo: 'Д-6/24-188', notes: 'Задолженность по оплате более 3 месяцев (п. 10.3)' },
+    { id: 's15', fio: 'Сидоров Владислав Юрьевич', faculty: 'АВТФ', eduLevel: 'Бакалавриат', course: 1, studyMode: 'Очная', group: 'АВТ-616', studyForm: 'Бюджет', rating: 232, gender: 'М', benefit: 'Нет', roomId: 'r303b', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/26-064', notes: '' },
+    { id: 's16', fio: 'Морозов Денис Васильевич', faculty: 'АВТФ', eduLevel: 'Специалитет', course: 2, studyMode: 'Очная', group: 'АВТС-51', studyForm: 'Бюджет', rating: 4.25, gender: 'М', benefit: 'Нет', roomId: 'r303c', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/25-112', notes: '' },
+    { id: 's17', fio: 'Козлов Максим Артёмович', faculty: 'АВТФ', eduLevel: 'Бакалавриат', course: 4, studyMode: 'Очная', group: 'АВТ-315', studyForm: 'Бюджет', rating: 4.10, gender: 'М', benefit: 'Нет', roomId: 'r303c', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/23-113', notes: 'Выпускной курс' },
+    { id: 's18', fio: 'Нгуен Минь Туан', faculty: 'ЦМО (Иностранцы)', eduLevel: 'Бакалавриат', course: 1, studyMode: 'Очная', group: 'АВТ-618и', studyForm: 'Контракт', rating: 4.50, gender: 'М', benefit: 'Нет', roomId: 'r304a', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/26-301', notes: 'Миграционный учёт ЦМО' },
+    { id: 's19', fio: 'Чжан Вэй', faculty: 'ЦМО (Иностранцы)', eduLevel: 'Магистратура', course: 2, studyMode: 'Очная', group: 'АВТМ-59и', studyForm: 'Контракт', rating: 4.35, gender: 'М', benefit: 'Нет', roomId: 'r304a', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/25-305', notes: 'Выпускной курс; миграционный учёт ЦМО' },
+    { id: 's20', fio: 'Ахмедов Рустам Алишер оглы', faculty: 'ЦМО (Иностранцы)', eduLevel: 'ПО', course: 1, studyMode: 'Очная', group: 'ПО-12', studyForm: 'Бюджет', rating: 4.65, gender: 'М', benefit: 'Нет', roomId: 'r304a', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/26-309', notes: 'Подготовительное отделение' },
+    { id: 's21', fio: 'Ли Сяолун', faculty: 'ЦМО (Иностранцы)', eduLevel: 'ПО', course: 1, studyMode: 'Очная', group: 'ПО-14', studyForm: 'Контракт', rating: 4.20, gender: 'М', benefit: 'Нет', roomId: 'r304b', status: 'Бронь', bookingDaysLeft: 6, contractNo: 'БР-26-104', notes: 'Ожидает прибытия (6 дн. из 10)' },
+    { id: 's22', fio: 'Смирнова Екатерина Олеговна', faculty: 'АВТФ', eduLevel: 'Бакалавриат', course: 1, studyMode: 'Очная', group: 'АВТ-613', studyForm: 'Бюджет', rating: 241, gender: 'Ж', benefit: 'Нет', roomId: 'r305a', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/26-045', notes: '' },
+    { id: 's23', fio: 'Новикова Ольга Сергеевна', faculty: 'АВТФ', eduLevel: 'Бакалавриат', course: 3, studyMode: 'Очная', group: 'АВТ-414', studyForm: 'Бюджет', rating: 4.70, gender: 'Ж', benefit: 'Нет', roomId: 'r305a', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/24-099', notes: '' },
+    { id: 's24', fio: 'Соловьёва Виктория Романовна', faculty: 'АВТФ', eduLevel: 'Бакалавриат', course: 2, studyMode: 'Очная', group: 'АВТ-516', studyForm: 'Бюджет', rating: 4.33, gender: 'Ж', benefit: 'Нет', roomId: 'r305b', status: 'Не ночует >14 дн.', bookingDaysLeft: null, contractNo: 'Д-6/25-161', notes: 'Отсутствует 21 день, требуется проверка коменданта' },
+    { id: 's25', fio: 'Карпова Елизавета Павловна', faculty: 'ФЭН', eduLevel: 'Аспирантура', course: 2, studyMode: 'Очная', group: 'ЭНА-22', studyForm: 'Бюджет', rating: 4.52, gender: 'Ж', benefit: 'Нет', roomId: 'r305c', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/25-250', notes: '' },
+    { id: 's26', fio: 'Васильев Игорь Станиславович', faculty: 'АВТФ', eduLevel: 'Бакалавриат', course: 1, studyMode: 'Очная', group: 'АВТ-617', studyForm: 'Бюджет', rating: 229, gender: 'М', benefit: 'Нет', roomId: 'r306a', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/26-082', notes: '' },
+    { id: 's27', fio: 'Степанов Андрей Николаевич', faculty: 'АВТФ', eduLevel: 'Бакалавриат', course: 2, studyMode: 'Очная', group: 'АВТ-517', studyForm: 'Бюджет', rating: 4.05, gender: 'М', benefit: 'Ветеран боевых действий', roomId: 'r306c', status: 'Проживает', bookingDaysLeft: null, contractNo: 'Д-6/25-011', notes: 'Освобождён от оплаты (п. 7.1.5)' }
   ],
   applications: [
-    { id: 'a1', regNo: 'ЛК-2026-08412', fio: 'Макаров Семён Ильич', faculty: 'АВТФ', course: 1, group: 'АВТ-611', studyForm: 'Бюджет', rating: 239, gender: 'М', benefit: 'Нет' },
-    { id: 'a2', regNo: 'ЛК-2026-08455', fio: 'Беляева Софья Дмитриевна', faculty: 'АВТФ', course: 2, group: 'АВТ-511', studyForm: 'Бюджет', rating: 4.68, gender: 'Ж', benefit: 'Нет' },
-    { id: 'a3', regNo: 'ЛК-2026-08490', fio: 'Григорьев Павел Олегович', faculty: 'ФПМИ', course: 1, group: 'ПМИ-61', studyForm: 'Бюджет', rating: 251, gender: 'М', benefit: 'Инвалид II гр.' }
+    { id: 'a1', regNo: 'ЛК-2026-08412', fio: 'Макаров Семён Ильич', faculty: 'АВТФ', eduLevel: 'Бакалавриат', course: 1, studyMode: 'Очная', group: 'АВТ-611', studyForm: 'Бюджет', rating: 239, gender: 'М', benefit: 'Нет' },
+    { id: 'a2', regNo: 'ЛК-2026-08455', fio: 'Беляева Софья Дмитриевна', faculty: 'АВТФ', eduLevel: 'Бакалавриат', course: 2, studyMode: 'Очная', group: 'АВТ-511', studyForm: 'Бюджет', rating: 4.68, gender: 'Ж', benefit: 'Нет' },
+    { id: 'a3', regNo: 'ЛК-2026-08490', fio: 'Григорьев Павел Олегович', faculty: 'ФПМИ', eduLevel: 'Бакалавриат', course: 1, studyMode: 'Очная', group: 'ПМИ-61', studyForm: 'Бюджет', rating: 251, gender: 'М', benefit: 'Инвалид II гр.' },
+    { id: 'a4', regNo: 'ЛК-2026-08503', fio: 'Куликова Анастасия Петровна', faculty: 'АВТФ', eduLevel: 'Магистратура', course: 1, studyMode: 'Очная', group: 'АВТМ-61', studyForm: 'Бюджет', rating: 4.92, gender: 'Ж', benefit: 'Сирота' },
+    { id: 'a5', regNo: 'ЛК-2026-08518', fio: 'Дорохов Максим Вячеславович', faculty: 'АВТФ', eduLevel: 'Бакалавриат', course: 3, studyMode: 'Очная', group: 'АВТ-415', studyForm: 'Бюджет', rating: 4.44, gender: 'М', benefit: 'Нет' },
+    { id: 'a6', regNo: 'ЛК-2026-08529', fio: 'Тарасова Варвара Игоревна', faculty: 'АВТФ', eduLevel: 'Бакалавриат', course: 1, studyMode: 'Очная', group: 'АВТ-614', studyForm: 'Контракт', rating: 224, gender: 'Ж', benefit: 'Нет' },
+    { id: 'a7', regNo: 'ЛК-2026-08541', fio: 'Комаров Артём Алексеевич', faculty: 'АВТФ', eduLevel: 'Бакалавриат', course: 3, studyMode: 'Заочная', group: 'АВТЗ-41', studyForm: 'Контракт', rating: 4.10, gender: 'М', benefit: 'Нет' },
+    { id: 'a8', regNo: 'ЛК-2026-08556', fio: 'Чэнь Юйхао', faculty: 'ЦМО (Иностранцы)', eduLevel: 'Магистратура', course: 1, studyMode: 'Очная', group: 'АВТМ-68и', studyForm: 'Контракт', rating: 4.60, gender: 'М', benefit: 'Нет' },
+    { id: 'a9', regNo: 'ЛК-2026-08570', fio: 'Савельев Денис Олегович', faculty: 'АВТФ', eduLevel: 'Специалитет', course: 1, studyMode: 'Очная', group: 'АВТС-61', studyForm: 'Бюджет', rating: 248, gender: 'М', benefit: 'Ветеран боевых действий' },
+    { id: 'a10', regNo: 'ЛК-2026-08584', fio: 'Миронова Елизавета Сергеевна', faculty: 'ФЭН', eduLevel: 'Бакалавриат', course: 2, studyMode: 'Очно-заочная', group: 'ЭНВ-51', studyForm: 'Контракт', rating: 4.25, gender: 'Ж', benefit: 'Нет' }
   ],
   logs: [
     { time: '18.11 10:15', actor: 'Комендант', text: 'Зафиксирована течь в Блоке 303 (комн. 303А, 303Б -> «Требует ремонта»)' },
@@ -524,7 +573,7 @@ function loadState() {
 }
 function saveState() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {} }
 function resetDemo() { state = JSON.parse(JSON.stringify(INITIAL_STATE)); saveState(); render(); showToast('Демо-данные восстановлены'); }
-function esc(s) { return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function esc(s) { return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&','<':'<','>':'>','"':'"',"'":'''}[m])); }
 function formatShortName(fio) {
   const p = String(fio ?? '').trim().split(/\s+/);
   if (p.length >= 3) return `${p[0]} ${p[1][0]}.${p[2][0]}.`;
@@ -535,6 +584,16 @@ function getRoom(id) { return state.rooms.find(r => r.id === id); }
 function getRoomOccupants(id) { return state.students.filter(s => s.roomId === id); }
 function getFreeBeds(r) { return r.condition === 'Авария (ремонт)' ? 0 : Math.max(0, r.capacity - getRoomOccupants(r.id).length); }
 function isRisk(s) { const r = getRoom(s.roomId); return s.status !== 'Проживает' || (r && r.condition === 'Авария (ремонт)'); }
+function isGraduating(s) {
+  return s.status === 'Проживает' && ((s.eduLevel === 'Бакалавриат' && s.course === 4) || (s.eduLevel === 'Магистратура' && s.course === 2));
+}
+
+function getAppPriority(a) {
+  if (a.benefit && a.benefit !== 'Нет') return { rank: 1, code: 'benefit', label: '1 · Льготная квота', cls: 't-red' };
+  if (a.course === 1 && a.studyMode === 'Очная') return { rank: 2, code: 'first_year', label: '2 · 1 курс (100% резерв)', cls: 't-blue' };
+  if (a.studyMode === 'Очная') return { rank: 3, code: 'senior', label: '3 · Старшие курсы', cls: 't-green' };
+  return { rank: 4, code: 'extramural', label: '4 · На время сессии', cls: 't-gray' };
+}
 
 function getVisibleStudents() {
   return state.role === 'dean' ? state.students.filter(s => s.faculty === 'АВТФ') : state.students;
@@ -603,14 +662,94 @@ function render() {
   else if (state.activeTab === 'quotas') m.innerHTML = renderQuotas();
 }
 
+/* ================= DASHBOARD ================= */
+function getForecastMetrics() {
+  const freeM = state.rooms.filter(r => r.gender === 'М').reduce((a, r) => a + getFreeBeds(r), 0);
+  const freeF = state.rooms.filter(r => r.gender === 'Ж').reduce((a, r) => a + getFreeBeds(r), 0);
+
+  const gradM = state.students.filter(s => s.gender === 'М' && isGraduating(s)).length;
+  const gradF = state.students.filter(s => s.gender === 'Ж' && isGraduating(s)).length;
+
+  const isReclaim = s => {
+    const r = getRoom(s.roomId);
+    if (r && r.condition === 'Авария (ремонт)') return false;
+    return s.status.includes('3 дня') || (s.status === 'Бронь' && s.bookingDaysLeft <= 0);
+  };
+  const reclM = state.students.filter(s => s.gender === 'М' && isReclaim(s)).length;
+  const reclF = state.students.filter(s => s.gender === 'Ж' && isReclaim(s)).length;
+
+  const repFree = g => state.rooms
+    .filter(r => r.gender === g && r.condition === 'Авария (ремонт)')
+    .reduce((a, r) => a + Math.max(0, r.capacity - getRoomOccupants(r.id).length), 0);
+  const repM = repFree('М');
+  const repF = repFree('Ж');
+
+  const availM = freeM + (state.fcUseGraduates ? gradM : 0) + (state.fcUseReclaim ? reclM : 0) + (state.fcUseRepair ? repM : 0);
+  const availF = freeF + (state.fcUseGraduates ? gradF : 0) + (state.fcUseReclaim ? reclF : 0) + (state.fcUseRepair ? repF : 0);
+
+  return { freeM, freeF, gradM, gradF, reclM, reclF, repM, repF, availM, availF };
+}
+
+function buildForecastHtml() {
+  const m = getForecastMetrics();
+  const balM = m.availM - state.forecastMale;
+  const balF = m.availF - state.forecastFemale;
+  const balTot = (m.availM + m.availF) - (state.forecastMale + state.forecastFemale);
+  const fmtBal = v => v >= 0
+    ? `<span class="tag t-green">Запас +${v}</span>`
+    : `<span class="tag t-red">Дефицит ${v}</span>`;
+
+  return `
+    <table class="fc-summary-table" style="border:1px solid var(--border-light);margin-top:6px;">
+      <thead>
+        <tr><th>Категория</th><th>Доступно</th><th>План набора</th><th>Итог</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Юноши (М)</strong></td>
+          <td>${m.availM} <span style="color:var(--muted)">(база ${m.freeM})</span></td>
+          <td>+${state.forecastMale}</td>
+          <td>${fmtBal(balM)}</td>
+        </tr>
+        <tr>
+          <td><strong>Девушки (Ж)</strong></td>
+          <td>${m.availF} <span style="color:var(--muted)">(база ${m.freeF})</span></td>
+          <td>+${state.forecastFemale}</td>
+          <td>${fmtBal(balF)}</td>
+        </tr>
+        <tr style="background:#f9fafb;font-weight:700;">
+          <td>Всего по этажу</td>
+          <td>${m.availM + m.availF}</td>
+          <td>+${state.forecastMale + state.forecastFemale}</td>
+          <td>${fmtBal(balTot)}</td>
+        </tr>
+      </tbody>
+    </table>
+    ${(balM < 0 || balF < 0) ? `<div style="margin-top:6px;font-size:11px;color:var(--red);">Нехватка мест по полу: проверьте резервы выше или перераспределите квоты / блоки между полами.</div>` : ''}`;
+}
+
+function updateForecastField(field, val) {
+  state[field] = val;
+  saveState();
+  const mEl = document.getElementById('fcMaleVal');
+  const fEl = document.getElementById('fcFemaleVal');
+  if (mEl) mEl.textContent = `+${state.forecastMale} чел.`;
+  if (fEl) fEl.textContent = `+${state.forecastFemale} чел.`;
+  const box = document.getElementById('forecastBox');
+  if (box) box.innerHTML = buildForecastHtml();
+}
+
 function renderDashboard() {
   const total = state.rooms.reduce((a, r) => a + r.capacity, 0);
   const visStud = getVisibleStudents();
   const occAll = state.students.length;
-  const free = state.rooms.reduce((a, r) => a + getFreeBeds(r), 0);
+  const freeM = state.rooms.filter(r => r.gender === 'М').reduce((a, r) => a + getFreeBeds(r), 0);
+  const freeF = state.rooms.filter(r => r.gender === 'Ж').reduce((a, r) => a + getFreeBeds(r), 0);
+  const free = freeM + freeF;
   const risks = visStud.filter(isRisk);
   const repRooms = state.rooms.filter(r => r.condition !== 'Норма').length;
   const expired = visStud.filter(s => s.status === 'Бронь' && s.bookingDaysLeft <= 0).length;
+  const fm = getForecastMetrics();
 
   return `
     <div class="breadcrumbs">Главная · Кампус и общежития · Общежитие № 6 · Сводка и активности</div>
@@ -639,12 +778,16 @@ function renderDashboard() {
         <div class="kpi-val" style="color:var(--blue)">${state.role === 'dean' ? visStud.length : occAll}</div>
       </div>
       <div class="kpi-cell">
-        <div><div class="kpi-label">Свободно к заселению</div><div class="kpi-sub">В исправных комн.</div></div>
+        <div><div class="kpi-label">Свободно к заселению</div><div class="kpi-sub">М: ${freeM} · Ж: ${freeF}</div></div>
         <div class="kpi-val" style="color:var(--green)">${free}</div>
       </div>
       <div class="kpi-cell">
-        <div><div class="kpi-label">Сигналы / Ремонты</div><div class="kpi-sub">Требуют реакции</div></div>
-        <div class="kpi-val" style="color:var(--red)">${risks.length} / ${repRooms}</div>
+        <div><div class="kpi-label">Сигналы риска</div><div class="kpi-sub">Требуют отработки</div></div>
+        <div class="kpi-val" style="color:var(--red)">${risks.length}</div>
+      </div>
+      <div class="kpi-cell">
+        <div><div class="kpi-label">Комнаты в ремонте</div><div class="kpi-sub">Авария / контроль</div></div>
+        <div class="kpi-val" style="color:var(--amber)">${repRooms}</div>
       </div>
     </div>
 
@@ -662,7 +805,7 @@ function renderDashboard() {
               ${risks.map(s => {
                 const r = getRoom(s.roomId);
                 return `<tr>
-                  <td><strong>${esc(s.fio)}</strong><div style="font-size:11px;color:var(--muted)">${esc(s.faculty)} · ${esc(s.group)}</div></td>
+                  <td><strong>${esc(s.fio)}</strong><div style="font-size:11px;color:var(--muted)">${esc(s.faculty)} · ${esc(s.eduLevel)} ${s.course} к. (${esc(s.group)})</div></td>
                   <td><strong>${r ? esc(r.number) : '—'}</strong></td>
                   <td>${statusTag(s)}<div style="font-size:11px;color:var(--muted);margin-top:2px;">${esc(s.notes || '')}</div></td>
                   <td style="text-align:right"><button class="btn btn-outline btn-xs" onclick="openStudentModal('${s.id}')">Открыть</button></td>
@@ -676,10 +819,47 @@ function renderDashboard() {
       <div>
         <div class="panel">
           <div class="panel-head">
+            <span>Прогноз под увеличение плана набора (М / Ж)</span>
+            <span class="tag t-blue">Стратегия</span>
+          </div>
+          <div class="panel-body">
+            <div class="fc-row">
+              <span>+ Юношей (М):</span>
+              <input type="range" min="0" max="20" value="${state.forecastMale}" oninput="updateForecastField('forecastMale', Number(this.value))">
+              <strong id="fcMaleVal" style="text-align:right">+${state.forecastMale} чел.</strong>
+            </div>
+            <div class="fc-row">
+              <span>+ Девушек (Ж):</span>
+              <input type="range" min="0" max="20" value="${state.forecastFemale}" oninput="updateForecastField('forecastFemale', Number(this.value))">
+              <strong id="fcFemaleVal" style="text-align:right">+${state.forecastFemale} чел.</strong>
+            </div>
+
+            <div class="fc-checks">
+              <div style="font-weight:700;color:var(--muted);font-size:10.5px;text-transform:uppercase;margin-bottom:2px;">Меры покрытия дефицита:</div>
+              <label>
+                <input type="checkbox" ${state.fcUseGraduates ? 'checked' : ''} onchange="updateForecastField('fcUseGraduates', this.checked)">
+                <span>Плановый выпуск (4 к. бак. / 2 к. маг.): <b>+${fm.gradM} М / +${fm.gradF} Ж</b></span>
+              </label>
+              <label>
+                <input type="checkbox" ${state.fcUseReclaim ? 'checked' : ''} onchange="updateForecastField('fcUseReclaim', this.checked)">
+                <span>Возврат просроченных броней и выселений: <b>+${fm.reclM} М / +${fm.reclF} Ж</b></span>
+              </label>
+              <label>
+                <input type="checkbox" ${state.fcUseRepair ? 'checked' : ''} onchange="updateForecastField('fcUseRepair', this.checked)">
+                <span>Завершение ремонта закрытых комнат: <b>+${fm.repM} М / +${fm.repF} Ж</b></span>
+              </label>
+            </div>
+
+            <div id="forecastBox">${buildForecastHtml()}</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
             <span>Журнал активностей и изменений</span>
             <span class="tag t-gray">${state.logs.length} записей</span>
           </div>
-          <div class="scroll-box" style="max-height:260px;">
+          <div class="scroll-box" style="max-height:220px;">
             ${state.logs.map(l => `
               <div class="act-row">
                 <div>
@@ -691,48 +871,22 @@ function renderDashboard() {
             `).join('')}
           </div>
         </div>
-
-        <div class="panel">
-          <div class="panel-head"><span>Прогноз под увеличение плана набора</span></div>
-          <div class="panel-body">
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-              <input type="range" min="0" max="25" value="${state.planIncrease}" style="flex:1" oninput="updateForecast(this.value)">
-              <strong id="planVal" style="min-width:65px">+${state.planIncrease} чел.</strong>
-            </div>
-            <div id="forecastBox">${buildForecastHtml(state.planIncrease)}</div>
-          </div>
-        </div>
       </div>
     </div>`;
 }
 
-function buildForecastHtml(val) {
-  const extra = Number(val || 0);
-  const free = state.rooms.reduce((a, r) => a + getFreeBeds(r), 0);
-  const reclaimable = state.students.filter(s => s.status.includes('3 дня') || (s.status === 'Бронь' && s.bookingDaysLeft <= 0)).length;
-  const bal = free - extra;
-  const bal2 = (free + reclaimable) - extra;
-  return `<div style="font-size:12px;background:#f8f9fa;border:1px solid var(--border-light);padding:7px 9px;">
-    Свободно сейчас: <b>${free}</b> -> после набора: <b style="color:${bal>=0?'var(--green)':'var(--red)'}">${bal >= 0 ? '+' + bal + ' запас' : 'дефицит ' + Math.abs(bal)}</b>.
-    С учётом возврата просроченных броней/выселений (<b>${free + reclaimable}</b> мест): <b>${bal2 >= 0 ? 'хватает' : 'не хватает ' + Math.abs(bal2)}</b>.
-  </div>`;
-}
-function updateForecast(val) {
-  state.planIncrease = Number(val); saveState();
-  document.getElementById('planVal').textContent = `+${state.planIncrease} чел.`;
-  document.getElementById('forecastBox').innerHTML = buildForecastHtml(state.planIncrease);
-}
-
+/* ================= SEARCH ================= */
 function renderSearch() {
   const visStud = getVisibleStudents();
   const facs = [...new Set(visStud.map(s => s.faculty))];
+  const levels = [...new Set(visStud.map(s => s.eduLevel))];
   const sts = [...new Set(visStud.map(s => s.status))];
   return `
     <div class="breadcrumbs">Главная · Кампус и общежития · Поиск проживающего</div>
     <div class="page-header">
       <div>
         <h1 class="page-title">Реестр и поиск проживающих</h1>
-        <div class="page-desc">${state.role === 'dean' ? 'Контур деканата АВТФ: показаны только студенты АВТФ' : 'Плотный реестр для работы с большим массивом записей'}</div>
+        <div class="page-desc">${state.role === 'dean' ? 'Контур деканата АВТФ: показаны только студенты АВТФ' : 'Плотный реестр с уровнем образования, курсом, формой обучения и статусами'}</div>
       </div>
     </div>
     <div class="panel">
@@ -744,6 +898,10 @@ function renderSearch() {
             <option value="all">Все факультеты</option>
             ${facs.map(f => `<option value="${esc(f)}" ${state.filterFaculty===f?'selected':''}>${esc(f)}</option>`).join('')}
           </select>` : ''}
+          <select class="select" onchange="state.filterEduLevel=this.value; saveState(); document.getElementById('searchRows').innerHTML=buildSearchRows();">
+            <option value="all">Все уровни</option>
+            ${levels.map(lv => `<option value="${esc(lv)}" ${state.filterEduLevel===lv?'selected':''}>${esc(lv)}</option>`).join('')}
+          </select>
           <select class="select" onchange="state.filterStatus=this.value; saveState(); document.getElementById('searchRows').innerHTML=buildSearchRows();">
             <option value="all">Все статусы</option>
             ${sts.map(st => `<option value="${esc(st)}" ${state.filterStatus===st?'selected':''}>${esc(st)}</option>`).join('')}
@@ -751,7 +909,7 @@ function renderSearch() {
         </div>
         <div style="overflow-x:auto">
           <table>
-            <thead><tr><th>ФИО обучающегося</th><th>Фак. / Группа</th><th>Курс / Рейт.</th><th>Комн.</th><th>Обучение / Льгота</th><th>Статус</th><th>Договор</th></tr></thead>
+            <thead><tr><th>ФИО обучающегося</th><th>Фак. / Группа</th><th>Уровень / Курс / Форма</th><th>Комн.</th><th>Основа / Льгота</th><th>Статус</th><th>Договор</th></tr></thead>
             <tbody id="searchRows">${buildSearchRows()}</tbody>
           </table>
         </div>
@@ -763,8 +921,11 @@ function buildSearchRows() {
   const q = state.searchQuery.trim().toLowerCase();
   const list = getVisibleStudents().filter(s => {
     const r = getRoom(s.roomId);
-    const hay = `${s.fio} ${s.group} ${s.faculty} ${s.contractNo} ${r ? r.number : ''}`.toLowerCase();
-    return (!q || hay.includes(q)) && (state.filterFaculty === 'all' || s.faculty === state.filterFaculty) && (state.filterStatus === 'all' || s.status === state.filterStatus);
+    const hay = `${s.fio} ${s.group} ${s.faculty} ${s.eduLevel} ${s.studyMode} ${s.contractNo} ${r ? r.number : ''}`.toLowerCase();
+    return (!q || hay.includes(q)) &&
+      (state.filterFaculty === 'all' || s.faculty === state.filterFaculty) &&
+      (state.filterEduLevel === 'all' || s.eduLevel === state.filterEduLevel) &&
+      (state.filterStatus === 'all' || s.status === state.filterStatus);
   });
   if (!list.length) return '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:16px;">Записи не найдены</td></tr>';
   return list.map(s => {
@@ -772,7 +933,7 @@ function buildSearchRows() {
     return `<tr class="row-link" onclick="openStudentModal('${s.id}')">
       <td><strong>${esc(s.fio)}</strong></td>
       <td>${esc(s.faculty)} · ${esc(s.group)}</td>
-      <td>${s.course} к. (${s.rating})</td>
+      <td>${esc(s.eduLevel)}, <b>${s.course} к.</b><div style="font-size:11px;color:var(--muted)">${esc(s.studyMode)} · рейт. ${s.rating}</div></td>
       <td><strong>${r ? esc(r.number) : '—'}</strong> <span style="color:var(--muted)">(${r ? esc(r.block) : ''})</span></td>
       <td>${esc(s.studyForm)} ${s.benefit !== 'Нет' ? `<span class="tag t-blue">${esc(s.benefit)}</span>` : ''}</td>
       <td>${statusTag(s)}</td>
@@ -781,6 +942,7 @@ function buildSearchRows() {
   }).join('');
 }
 
+/* ================= FLOOR MAP ================= */
 function renderMap() {
   const blocks = [...new Set(state.rooms.map(r => r.block))];
   return `
@@ -820,7 +982,7 @@ function renderMap() {
                   cls = 'bed-risk';
                 }
                 const shortName = formatShortName(s.fio);
-                bedsHtml += `<div class="bed ${cls}" title="${esc(s.fio)} — ${esc(s.status)}">${esc(shortName + suffix)}</div>`;
+                bedsHtml += `<div class="bed ${cls}" title="${esc(s.fio)} — ${esc(s.eduLevel)} ${s.course} к. (${esc(s.status)})">${esc(shortName + suffix)}</div>`;
               });
               for (let i = 0; i < r.capacity - occ.length; i++) {
                 bedsHtml += r.condition === 'Авария (ремонт)'
@@ -843,6 +1005,7 @@ function renderMap() {
     </div>`;
 }
 
+/* ================= REPAIRS ================= */
 function renderRepairs() {
   const problemRooms = state.rooms.filter(r => r.condition !== 'Норма');
   const normRooms = state.rooms.filter(r => r.condition === 'Норма');
@@ -888,52 +1051,147 @@ function renderRepairs() {
     </div>` : ''}`;
 }
 
+/* ================= QUOTAS & APPLICATIONS (SWAPPED + STICKY + FILTERS) ================= */
+function buildAppRows() {
+  const canAssign = state.role === 'directorate' || state.role === 'dean';
+  const q = state.appSearch.trim().toLowerCase();
+  let list = getVisibleApps().filter(a => {
+    const p = getAppPriority(a);
+    const hay = `${a.fio} ${a.regNo} ${a.faculty} ${a.group} ${a.eduLevel} ${a.benefit}`.toLowerCase();
+    const matchQ = !q || hay.includes(q);
+    const matchBenefit =
+      state.appBenefitFilter === 'all' ||
+      (state.appBenefitFilter === 'yes' && a.benefit !== 'Нет') ||
+      (state.appBenefitFilter === 'no' && a.benefit === 'Нет');
+    const matchPrio = state.appPriorityFilter === 'all' || p.code === state.appPriorityFilter;
+    return matchQ && matchBenefit && matchPrio;
+  });
+
+  if (state.appSort === 'priority') {
+    list.sort((a, b) => {
+      const pa = getAppPriority(a).rank;
+      const pb = getAppPriority(b).rank;
+      if (pa !== pb) return pa - pb;
+      return b.rating - a.rating;
+    });
+  } else if (state.appSort === 'rating') {
+    list.sort((a, b) => b.rating - a.rating);
+  } else {
+    list.sort((a, b) => a.regNo.localeCompare(b.regNo));
+  }
+
+  const cntEl = document.getElementById('appsFilteredCount');
+  if (cntEl) cntEl.textContent = list.length;
+
+  if (!list.length) {
+    return `<tr><td colspan="${canAssign ? 6 : 5}" style="text-align:center;color:var(--muted);padding:18px;">По выбранным фильтрам заявлений не найдено.</td></tr>`;
+  }
+
+  return list.map(a => {
+    const p = getAppPriority(a);
+    return `<tr>
+      <td style="color:var(--muted);white-space:nowrap;">${esc(a.regNo)}</td>
+      <td>
+        <strong>${esc(a.fio)}</strong>
+        <div style="font-size:11px;color:var(--muted)">${esc(a.faculty)} · ${esc(a.group)} · пол: ${a.gender}</div>
+      </td>
+      <td>
+        ${esc(a.eduLevel)}, <b>${a.course} к.</b>
+        <div style="font-size:11px;color:var(--muted)">${esc(a.studyMode)} (${esc(a.studyForm)}) · рейт. ${a.rating}</div>
+      </td>
+      <td>${a.benefit !== 'Нет' ? `<span class="tag t-blue">${esc(a.benefit)}</span>` : '<span style="color:var(--muted)">Нет</span>'}</td>
+      <td><span class="tag ${p.cls}">${p.label}</span></td>
+      ${canAssign ? `<td style="text-align:right;white-space:nowrap;"><button class="btn btn-primary btn-xs" onclick="openAssignModal('${a.id}')">${state.role === 'dean' ? 'Направление' : 'Заселить'}</button></td>` : ''}
+    </tr>`;
+  }).join('');
+}
+
 function renderQuotas() {
   const visApps = getVisibleApps();
   const canAssign = state.role === 'directorate' || state.role === 'dean';
+  const freeM = state.rooms.filter(r => r.gender === 'М').reduce((a, r) => a + getFreeBeds(r), 0);
+  const freeF = state.rooms.filter(r => r.gender === 'Ж').reduce((a, r) => a + getFreeBeds(r), 0);
+
   return `
     <div class="breadcrumbs">Главная · Кампус и общежития · Квоты и заявления</div>
     <div class="page-header">
-      <div><h1 class="page-title">Квоты факультетов и заявления</h1><div class="page-desc">Контроль квот до 20 августа (п. 5.2.1) и обработка заявлений из ЛК (п. 2.3)</div></div>
+      <div><h1 class="page-title">Квоты факультетов и поступившие заявления</h1><div class="page-desc">Контроль квот до 20 августа (п. 5.2.1) и приоритетная обработка заявлений из ЛК (п. 2.3, 4.1.1)</div></div>
     </div>
     <div class="quotas-grid">
+      <!-- LEFT: Applications list with filters -->
       <div class="panel">
-        <div class="panel-head"><span>Баланс квот (Этаж 3)</span></div>
+        <div class="panel-head">
+          <span>Поступившие заявления из ЛК</span>
+          <span class="tag t-blue" id="appsFilteredCount">${visApps.length}</span>
+        </div>
         <div class="panel-body">
-          ${state.faculties.map(f => {
-            const used = state.students.filter(s => s.faculty === f.name).length;
-            const pct = Math.min(100, Math.round((used / f.quota) * 100));
-            return `<div style="margin-bottom:10px;">
-              <div style="display:flex;justify-content:space-between;font-size:12px;">
-                <strong>${esc(f.name)}</strong><span><b>${used}</b> / ${f.quota} (ост.: ${Math.max(0, f.quota - used)})</span>
-              </div>
-              <div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div>
-            </div>`;
-          }).join('')}
+          <div class="toolbar">
+            <input class="input input-grow" placeholder="Поиск по ФИО, рег. №, группе..." value="${esc(state.appSearch)}" oninput="state.appSearch=this.value; saveState(); document.getElementById('appRows').innerHTML=buildAppRows();">
+            <select class="select" onchange="state.appBenefitFilter=this.value; saveState(); document.getElementById('appRows').innerHTML=buildAppRows();">
+              <option value="all" ${state.appBenefitFilter==='all'?'selected':''}>Льготы: все</option>
+              <option value="yes" ${state.appBenefitFilter==='yes'?'selected':''}>Только льготники</option>
+              <option value="no" ${state.appBenefitFilter==='no'?'selected':''}>Без льгот</option>
+            </select>
+            <select class="select" onchange="state.appPriorityFilter=this.value; saveState(); document.getElementById('appRows').innerHTML=buildAppRows();">
+              <option value="all" ${state.appPriorityFilter==='all'?'selected':''}>Приоритет: любой</option>
+              <option value="benefit" ${state.appPriorityFilter==='benefit'?'selected':''}>1 · Льготная квота</option>
+              <option value="first_year" ${state.appPriorityFilter==='first_year'?'selected':''}>2 · 1 курс (резерв)</option>
+              <option value="senior" ${state.appPriorityFilter==='senior'?'selected':''}>3 · Старшие курсы</option>
+              <option value="extramural" ${state.appPriorityFilter==='extramural'?'selected':''}>4 · На время сессии</option>
+            </select>
+            <select class="select" onchange="state.appSort=this.value; saveState(); document.getElementById('appRows').innerHTML=buildAppRows();">
+              <option value="priority" ${state.appSort==='priority'?'selected':''}>Сорт.: по приоритету</option>
+              <option value="rating" ${state.appSort==='rating'?'selected':''}>Сорт.: по рейтингу</option>
+              <option value="regNo" ${state.appSort==='regNo'?'selected':''}>Сорт.: по рег. №</option>
+            </select>
+          </div>
+          <div style="overflow-x:auto">
+            <table>
+              <thead>
+                <tr>
+                  <th>Рег. №</th>
+                  <th>ФИО / Факультет</th>
+                  <th>Уровень / Курс / Форма</th>
+                  <th>Льгота</th>
+                  <th>Приоритет</th>
+                  ${canAssign ? '<th style="text-align:right">Действие</th>' : ''}
+                </tr>
+              </thead>
+              <tbody id="appRows">${buildAppRows()}</tbody>
+            </table>
+          </div>
         </div>
       </div>
 
-      <div class="panel">
-        <div class="panel-head"><span>Поступившие заявления из ЛК</span><span class="tag t-blue">${visApps.length}</span></div>
-        <div class="panel-body" style="padding:0;">
-          ${visApps.length === 0 ? '<div class="panel-body" style="color:var(--muted)">Нет необработанных заявлений.</div>' : `
-          <table>
-            <thead><tr><th>Рег. №</th><th>ФИО / Факультет</th><th>Курс / Рейт.</th><th>Льгота</th>${canAssign ? '<th style="text-align:right">Действие</th>' : ''}</tr></thead>
-            <tbody>
-              ${visApps.map(a => `<tr>
-                <td style="color:var(--muted)">${esc(a.regNo)}</td>
-                <td><strong>${esc(a.fio)}</strong><div style="font-size:11px;color:var(--muted)">${esc(a.faculty)} · пол: ${a.gender}</div></td>
-                <td>${a.course} к. (${a.rating})</td>
-                <td>${esc(a.benefit)}</td>
-                ${canAssign ? `<td style="text-align:right"><button class="btn btn-primary btn-xs" onclick="openAssignModal('${a.id}')">${state.role === 'dean' ? 'Выдать направление' : 'Заселить'}</button></td>` : ''}
-              </tr>`).join('')}
-            </tbody>
-          </table>`}
+      <!-- RIGHT TOP (STICKY): Quota Balance -->
+      <div class="panel sticky-panel">
+        <div class="panel-head">
+          <span>Баланс квот (Этаж 3)</span>
+          <span class="tag t-green">Своб.: ${freeM + freeF} (М:${freeM}, Ж:${freeF})</span>
+        </div>
+        <div class="panel-body">
+          ${state.faculties.map(f => {
+            const used = state.students.filter(s => s.faculty === f.name).length;
+            const rem = Math.max(0, f.quota - used);
+            const pct = Math.min(100, Math.round((used / f.quota) * 100));
+            return `<div style="margin-bottom:12px;">
+              <div style="display:flex;justify-content:space-between;font-size:12px;">
+                <strong>${esc(f.name)}</strong>
+                <span><b>${used}</b> / ${f.quota} <span style="color:${rem===0?'var(--red)':'var(--muted)'}">(ост.: ${rem})</span></span>
+              </div>
+              <div style="font-size:10.5px;color:var(--muted);margin-top:1px;">${esc(f.note)}</div>
+              <div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${pct>=95?'var(--red)':'var(--green)'}"></div></div>
+            </div>`;
+          }).join('')}
+          <div style="border-top:1px solid var(--border-light);padding-top:8px;font-size:11px;color:var(--muted);">
+            Панель закреплена при прокрутке длинного списка заявлений.
+          </div>
         </div>
       </div>
     </div>`;
 }
 
+/* ================= MODALS ================= */
 function openStudentModal(id) {
   const s = state.students.find(x => x.id === id); if (!s) return;
   const r = getRoom(s.roomId);
@@ -943,14 +1201,16 @@ function openStudentModal(id) {
 
   document.getElementById('modalBody').innerHTML = `
     <div class="modal-top">
-      <div><h3 style="font-size:15px">${esc(s.fio)}</h3><div style="margin-top:3px">${statusTag(s)}</div></div>
+      <div><h3 style="font-size:15px">${esc(s.fio)}</h3><div style="margin-top:3px">${statusTag(s)} ${isGraduating(s) ? '<span class="tag t-blue">Выпускной курс</span>' : ''}</div></div>
       <button class="close-x" onclick="closeModal()">×</button>
     </div>
     <div class="info-grid">
-      <div><span>Факультет / Группа</span><strong>${esc(s.faculty)} · ${esc(s.group)} (${s.course} к.)</strong></div>
+      <div><span>Факультет / Группа</span><strong>${esc(s.faculty)} · ${esc(s.group)}</strong></div>
+      <div><span>Уровень / Курс / Форма</span><strong>${esc(s.eduLevel)}, ${s.course} к. · ${esc(s.studyMode)}</strong></div>
       <div><span>Комната</span><strong>${r ? esc(r.number) + ' (' + esc(r.block) + ')' : '—'}</strong></div>
-      <div><span>Обучение / Рейтинг</span><strong>${esc(s.studyForm)} · ${s.rating}</strong></div>
-      <div><span>Льгота / Договор</span><strong>${esc(s.benefit)} · ${esc(s.contractNo)}</strong></div>
+      <div><span>Основа / Рейтинг</span><strong>${esc(s.studyForm)} · ${s.rating}</strong></div>
+      <div><span>Льготная категория</span><strong>${esc(s.benefit)}</strong></div>
+      <div><span>Договор найма</span><strong>${esc(s.contractNo)}</strong></div>
     </div>
     ${s.notes ? `<div class="act-row prio-amber" style="margin-bottom:10px;border:1px solid #f3d098;">${esc(s.notes)}</div>` : ''}
     ${isDir ? `
@@ -988,7 +1248,7 @@ function openRoomModal(roomId) {
       <strong style="font-size:12px;display:block;margin-bottom:6px;">Проживающие (${occ.length} из ${r.capacity}):</strong>
       ${occ.length === 0 ? '<p style="color:var(--muted)">Комната свободна.</p>' : occ.map(s => `
         <div class="act-row" style="border:1px solid var(--border-light);margin-bottom:4px;">
-          <div><strong>${esc(s.fio)}</strong> (${esc(s.faculty)}) ${statusTag(s)}</div>
+          <div><strong>${esc(s.fio)}</strong> (${esc(s.faculty)}, ${esc(s.eduLevel)} ${s.course} к.) ${statusTag(s)}</div>
           <button class="btn btn-outline btn-xs" onclick="openStudentModal('${s.id}')">Карточка</button>
         </div>`).join('')}
     </div>
@@ -1005,7 +1265,7 @@ function openRoomModal(roomId) {
       <div style="border-top:1px solid var(--border-light);padding-top:10px;margin-top:10px;">
         <strong style="font-size:12px;display:block;margin-bottom:6px;">Заселить по заявлению (${free} своб. мест):</strong>
         <div style="display:flex;gap:6px;">
-          <select id="quickAppSel" class="select" style="flex:1">${state.applications.filter(a => a.gender === r.gender).map(a => `<option value="${a.id}">${esc(a.fio)} (${esc(a.faculty)})</option>`).join('')}</select>
+          <select id="quickAppSel" class="select" style="flex:1">${state.applications.filter(a => a.gender === r.gender).map(a => `<option value="${a.id}">${esc(a.fio)} (${esc(a.faculty)}, ${esc(a.eduLevel)} ${a.course} к.)</option>`).join('')}</select>
           <button class="btn btn-primary btn-xs" onclick="assignToRoom('${r.id}')">Заселить</button>
         </div>
       </div>` : ''}` : ''}`;
@@ -1014,13 +1274,19 @@ function openRoomModal(roomId) {
 
 function openAssignModal(appId) {
   const a = state.applications.find(x => x.id === appId); if (!a) return;
+  const p = getAppPriority(a);
   const avail = state.rooms.filter(r => r.gender === a.gender && getFreeBeds(r) > 0 && (state.role !== 'dean' || r.quotaTag === 'АВТФ'));
   document.getElementById('modalBody').innerHTML = `
     <div class="modal-top">
-      <div><h3 style="font-size:15px">Заселение по заявлению ${esc(a.regNo)}</h3></div>
+      <div><h3 style="font-size:15px">Заселение по заявлению ${esc(a.regNo)}</h3><div style="margin-top:3px"><span class="tag ${p.cls}">${p.label}</span></div></div>
       <button class="close-x" onclick="closeModal()">×</button>
     </div>
-    <p style="margin-bottom:10px;"><strong>${esc(a.fio)}</strong> · ${esc(a.faculty)}, ${a.course} к., пол: ${a.gender}, рейтинг: ${a.rating}</p>
+    <div class="info-grid">
+      <div><span>ФИО / Факультет</span><strong>${esc(a.fio)} (${esc(a.faculty)})</strong></div>
+      <div><span>Уровень / Курс / Форма</span><strong>${esc(a.eduLevel)}, ${a.course} к. · ${esc(a.studyMode)}</strong></div>
+      <div><span>Основа / Рейтинг</span><strong>${esc(a.studyForm)} · ${a.rating}</strong></div>
+      <div><span>Пол / Льгота</span><strong>${a.gender} · ${esc(a.benefit)}</strong></div>
+    </div>
     ${avail.length ? `
       <select id="assignRoomSel" class="select" style="width:100%;margin-bottom:10px;">${avail.map(r => `<option value="${r.id}">Комната ${esc(r.number)} (${esc(r.block)}, квота: ${esc(r.quotaTag)}, своб.: ${getFreeBeds(r)})</option>`).join('')}</select>
       <button class="btn btn-primary" onclick="confirmAssign('${a.id}')">${state.role === 'dean' ? 'Выдать направление (бронь 10 дн.)' : 'Выдать бронь на 10 дней (п. 3.6)'}</button>
@@ -1028,6 +1294,7 @@ function openAssignModal(appId) {
   document.getElementById('modalBackdrop').classList.add('open');
 }
 
+/* ================= ACTIONS ================= */
 function closeModal() { document.getElementById('modalBackdrop').classList.remove('open'); }
 function deanRequest(id) {
   const s = state.students.find(x => x.id === id);
@@ -1078,9 +1345,12 @@ function moveAppToRoom(appId, roomId) {
   const idx = state.applications.findIndex(x => x.id === appId);
   const a = state.applications[idx]; const r = getRoom(roomId);
   state.students.push({
-    id: 's' + Date.now(), fio: a.fio, faculty: a.faculty, course: a.course, group: a.group,
-    studyForm: a.studyForm, rating: a.rating, gender: a.gender, benefit: a.benefit,
-    roomId: r.id, status: 'Бронь', bookingDaysLeft: 10, contractNo: 'БР-26-' + Math.floor(100+Math.random()*899),
+    id: 's' + Date.now(), fio: a.fio, faculty: a.faculty,
+    eduLevel: a.eduLevel, course: a.course, studyMode: a.studyMode,
+    group: a.group, studyForm: a.studyForm, rating: a.rating,
+    gender: a.gender, benefit: a.benefit,
+    roomId: r.id, status: 'Бронь', bookingDaysLeft: 10,
+    contractNo: 'БР-26-' + Math.floor(100+Math.random()*899),
     notes: `Заселён по заявлению ${a.regNo} (бронь 10 дней)`
   });
   state.applications.splice(idx, 1);
