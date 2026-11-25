@@ -27,6 +27,10 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      overflow-y: scroll;
+      scrollbar-gutter: stable;
+    }
     body {
       font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
       background: var(--white);
@@ -35,27 +39,46 @@
       line-height: 1.35;
     }
 
-    /* Top utility bar */
+    /* Top utility bar — fixed single-line layout on desktop without jumping */
     .utility-bar {
       border-bottom: 1px solid var(--border-light);
       background: var(--white);
       padding: 5px 16px;
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       justify-content: space-between;
       align-items: center;
       gap: 8px;
       font-size: 11.5px;
+      min-height: 33px;
     }
-    .utility-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; color: var(--muted); }
-    .utility-left .accent { color: var(--red-brand); font-weight: 700; }
-    .utility-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .utility-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+      flex-shrink: 1;
+      color: var(--muted);
+    }
+    .utility-left .accent {
+      color: var(--red-brand);
+      font-weight: 700;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .utility-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
     .week-badge {
       background: #f5a623;
       color: #fff;
       font-weight: 700;
       font-size: 11px;
       padding: 2px 8px;
+      white-space: nowrap;
     }
     .role-perm {
       font-size: 11px;
@@ -63,6 +86,7 @@
       background: #f3f4f6;
       padding: 2px 7px;
       border: 1px solid var(--border-light);
+      white-space: nowrap;
     }
     .role-select, .ctx-select {
       border: 1px solid var(--border);
@@ -73,6 +97,7 @@
       cursor: pointer;
     }
     .ctx-select { font-weight: 600; }
+    #dormSelect { max-width: 315px; text-overflow: ellipsis; }
 
     /* Compact Header */
     .site-header {
@@ -155,6 +180,7 @@
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
+      white-space: nowrap;
     }
     .btn:disabled {
       opacity: 0.45;
@@ -196,7 +222,7 @@
 
     /* Grids & Panels */
     .dash-grid { display: grid; grid-template-columns: 1.4fr 1.1fr; gap: 12px; align-items: start; }
-    .quotas-grid { display: grid; grid-template-columns: 1.55fr 0.85fr; gap: 12px; align-items: start; }
+    .quotas-grid { display: grid; grid-template-columns: 1.65fr 0.75fr; gap: 12px; align-items: start; }
     .sticky-panel { position: sticky; top: 12px; }
     .panel {
       border: 1px solid var(--border);
@@ -251,7 +277,7 @@
     .fc-checks input[type="checkbox"] { margin-top: 2px; }
     .fc-summary-table th, .fc-summary-table td { padding: 4px 6px; font-size: 11.5px; }
 
-    /* Tags */
+    /* Tags & Interactive Multi-Benefit Tooltip */
     .tag {
       display: inline-block;
       padding: 1px 6px;
@@ -267,6 +293,83 @@
     .t-blue { background: var(--blue-bg); color: #1d4ed8; border-color: #bfd7fe; }
     .t-gray { background: #f3f4f6; color: #4b5563; border-color: #d1d5db; }
 
+    .benefit-multi-wrap {
+      position: relative;
+      display: inline-block;
+    }
+    .benefit-multi-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 7px;
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--blue-bg);
+      color: #1d4ed8;
+      border: 1px solid #93c5fd;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.12s, border-color 0.12s;
+    }
+    .benefit-multi-btn:hover,
+    .benefit-multi-wrap:focus-within .benefit-multi-btn {
+      background: #dbeafe;
+      border-color: var(--blue);
+    }
+    .benefit-multi-count {
+      background: var(--blue);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 0 4px;
+    }
+    .benefit-popover {
+      display: none;
+      position: absolute;
+      left: 0;
+      top: calc(100% + 4px);
+      z-index: 60;
+      min-width: 220px;
+      background: #111827;
+      color: #fff;
+      padding: 7px 10px;
+      font-size: 11px;
+      line-height: 1.4;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+      border: 1px solid #374151;
+      text-align: left;
+      white-space: normal;
+    }
+    .benefit-multi-wrap:hover .benefit-popover,
+    .benefit-multi-wrap:focus-within .benefit-popover,
+    .benefit-multi-wrap.open .benefit-popover {
+      display: block;
+    }
+    .benefit-popover-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: #9ca3af;
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+    .benefit-popover ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .benefit-popover li {
+      padding: 2px 0;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .benefit-popover li::before {
+      content: "•";
+      color: #60a5fa;
+      font-weight: 700;
+    }
+
     /* Dense Tables */
     .toolbar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; align-items: center; }
     .input, .select {
@@ -281,7 +384,7 @@
 
     table { width: 100%; border-collapse: collapse; }
     th, td {
-      padding: 5px 7px;
+      padding: 6px 7px;
       text-align: left;
       border-bottom: 1px solid var(--border-light);
       font-size: 12px;
@@ -301,6 +404,20 @@
     tr.row-link .row-open-cue { color: var(--muted); font-size: 11px; font-weight: 600; }
     tr.row-link:hover .row-open-cue { color: var(--green-dark); text-decoration: underline; }
 
+    /* Vertical stacked actions in Quotas table for clean column balance */
+    .app-actions-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      width: 112px;
+      margin-left: auto;
+    }
+    .app-actions-stack .btn {
+      width: 100%;
+      justify-content: center;
+      padding: 2px 6px;
+    }
+
     /* Activity Rows */
     .act-row {
       padding: 6px 8px;
@@ -313,6 +430,19 @@
     .act-row:last-child { border-bottom: none; }
     .act-row.prio-amber { border-left: 3px solid var(--amber); background: #fffdf7; }
     .act-row.prio-red { border-left: 3px solid var(--red); background: #fffafa; }
+    .act-row-clickable {
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+    .act-row-clickable:hover {
+      background: #f1f5f9 !important;
+    }
+    .act-row-cue {
+      font-size: 10.5px;
+      color: var(--blue);
+      font-weight: 600;
+      margin-top: 2px;
+    }
 
     /* Floor Map */
     .blocks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(410px, 1fr)); gap: 10px; }
@@ -411,6 +541,10 @@
 
     .print-only { display: none; }
 
+    @media (max-width: 1140px) {
+      .utility-bar { flex-wrap: wrap; }
+    }
+
     @media (max-width: 1024px) {
       .dash-grid, .quotas-grid, .kpi-strip, .info-grid, .blocks-grid { grid-template-columns: 1fr; }
       .sticky-panel { position: static; }
@@ -471,7 +605,7 @@
     </select>
   </div>
   <div class="utility-right">
-    <span class="week-badge">12 учебная неделя</span>
+    <span class="week-badge" id="weekBadge">13 учебная неделя</span>
     <span class="role-perm" id="rolePermBadge">Права: полный доступ</span>
     <select id="roleSelect" class="role-select" title="Выбор роли пользователя">
       <option value="directorate">Дирекция студгородка / Комендант</option>
@@ -536,7 +670,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const STORAGE_KEY = 'nstu_dorm6_wide_v4';
+const STORAGE_KEY = 'nstu_dorm6_wide_v5';
 
 const DORM_CATALOG = {
   dorm6: { name: 'Общежитие № 6', addr: 'ул. Блюхера, 32/1', cap: 734, prio: 'АВТФ, квота ЦМО (60 мест)' },
@@ -674,6 +808,44 @@ function formatShortName(fio) {
   if (p.length === 2) return `${p[0]} ${p[1][0]}.`;
   return p[0] || '';
 }
+
+/* ================= ACADEMIC WEEK CALCULATION ================= */
+function getAcademicWeekInfo(now = new Date()) {
+  const y = now.getFullYear();
+  const m = now.getMonth(); // 0 = Jan, 8 = Sept
+  const todayMidnight = new Date(y, m, now.getDate());
+  const dateStr = todayMidnight.toLocaleDateString('ru-RU');
+
+  if (m >= 8) {
+    // Осенний семестр: 1-я неделя начинается в понедельник недели 1 сентября
+    const sept1 = new Date(y, 8, 1);
+    const shift = (sept1.getDay() + 6) % 7;
+    const week1Mon = new Date(y, 8, 1 - shift);
+    const week = Math.floor((todayMidnight - week1Mon) / 604800000) + 1;
+    return { text: `${week} учебная неделя`, title: `Осенний семестр · ${dateStr}` };
+  }
+  if (m >= 1 && m <= 5) {
+    // Весенний семестр: старт с понедельника недели 9 февраля
+    const feb9 = new Date(y, 1, 9);
+    const shift = (feb9.getDay() + 6) % 7;
+    const week1Mon = new Date(y, 1, 9 - shift);
+    const week = Math.max(1, Math.floor((todayMidnight - week1Mon) / 604800000) + 1);
+    return { text: `${week} учебная неделя`, title: `Весенний семестр · ${dateStr}` };
+  }
+  return {
+    text: m === 0 ? 'Зимняя сессия' : 'Летний период',
+    title: `Календарная дата: ${dateStr}`
+  };
+}
+
+function updateWeekBadge() {
+  const el = document.getElementById('weekBadge');
+  if (!el) return;
+  const info = getAcademicWeekInfo();
+  el.textContent = info.text;
+  el.title = info.title;
+}
+
 function isPilotContext() {
   return state.selectedDorm === 'dorm6' && state.selectedFloor === '3';
 }
@@ -689,13 +861,11 @@ function returnToPilot() {
 function getRoom(id) { return state.rooms.find(r => r.id === id); }
 function getRoomOccupants(id) { return state.students.filter(s => s.roomId === id); }
 
-// Только готовые к заселению места (комната в состоянии "Норма")
 function getReadyFreeBeds(r) {
   if (r.condition !== 'Норма') return 0;
   return Math.max(0, r.capacity - getRoomOccupants(r.id).length);
 }
 
-// Незанятые места, выведенные из оборота из-за ремонта или аварии
 function getRepairUnavailBeds(r) {
   if (r.condition === 'Норма') return 0;
   return Math.max(0, r.capacity - getRoomOccupants(r.id).length);
@@ -711,7 +881,6 @@ function getFloorBalance(facultyFilter = null) {
   const repairUnavailM = rooms.filter(r => r.gender === 'М').reduce((a, r) => a + getRepairUnavailBeds(r), 0);
   const repairUnavailF = rooms.filter(r => r.gender === 'Ж').reduce((a, r) => a + getRepairUnavailBeds(r), 0);
   const repairUnavail = repairUnavailM + repairUnavailF;
-  // Контроль нуля: total === occupied + readyFree + repairUnavail
   return { total, occupied, readyFree, readyFreeM, readyFreeF, repairUnavail, repairUnavailM, repairUnavailF };
 }
 
@@ -756,7 +925,17 @@ function renderBenefitsHtml(obj) {
   const list = getBenefits(obj);
   if (!list.length) return '<span style="color:var(--muted)">—</span>';
   if (list.length === 1) return `<span class="tag t-blue">${esc(list[0])}</span>`;
-  return `<span class="tag t-blue" title="${esc(list.join(', '))}">${esc(list[0])} <b>+${list.length - 1}</b></span>`;
+  return `
+    <span class="benefit-multi-wrap" onclick="event.stopPropagation(); this.classList.toggle('open')">
+      <button type="button" class="benefit-multi-btn" aria-label="Показать все льготы (${list.length})">
+        <span>${esc(list[0])}</span>
+        <span class="benefit-multi-count">+${list.length - 1}</span>
+      </button>
+      <div class="benefit-popover" role="tooltip">
+        <div class="benefit-popover-title">Подтверждённые льготы (${list.length}):</div>
+        <ul>${list.map(b => `<li>${esc(b)}</li>`).join('')}</ul>
+      </div>
+    </span>`;
 }
 
 function getAppPriority(a) {
@@ -863,6 +1042,7 @@ function renderDemoPlaceholder() {
 }
 
 function render() {
+  updateWeekBadge();
   document.getElementById('roleSelect').value = state.role;
   document.getElementById('dormSelect').value = state.selectedDorm;
   document.getElementById('floorSelect').value = state.selectedFloor;
@@ -918,7 +1098,6 @@ function getFilteredStudents() {
     return matchQ && matchFac && matchLevel && matchMed && matchStatus;
   });
 
-  // Всегда сортируем по номеру комнаты, затем по ФИО
   list.sort((a, b) => {
     const rA = getRoom(a.roomId);
     const rB = getRoom(b.roomId);
@@ -985,17 +1164,15 @@ function exportAppsCsv() {
   downloadCsv('nstu_dorm6_applications.csv', headers, rows);
 }
 
-/* ================= FORECAST (PRORECTOR ROLE — ZERO DOUBLE COUNTING) ================= */
+/* ================= FORECAST (PRORECTOR ROLE) ================= */
 function getForecastMetrics() {
   const bal = getFloorBalance();
   const freeM = bal.readyFreeM;
   const freeF = bal.readyFreeF;
 
-  // Учитываем все активные заявления, не отклонённые (включая на доработке как резерв очереди)
   const appsM = state.applications.filter(a => a.gender === 'М').length;
   const appsF = state.applications.filter(a => a.gender === 'Ж').length;
 
-  // Считаем уникальных студентов для высвобождения (исключаем двойной учёт Зайцева К.А.)
   const reclaimIds = new Set();
   state.students.forEach(s => {
     const r = getRoom(s.roomId);
@@ -1007,7 +1184,7 @@ function getForecastMetrics() {
 
   const gradIds = new Set();
   state.students.forEach(s => {
-    if (reclaimIds.has(s.id)) return; // Уже учтён в оперативном возврате/выселении
+    if (reclaimIds.has(s.id)) return;
     const r = getRoom(s.roomId);
     if (r && r.condition === 'Авария (ремонт)') return;
     if (isGraduating(s)) gradIds.add(s.id);
@@ -1018,7 +1195,6 @@ function getForecastMetrics() {
   const gradM = state.students.filter(s => gradIds.has(s.id) && s.gender === 'М').length;
   const gradF = state.students.filter(s => gradIds.has(s.id) && s.gender === 'Ж').length;
 
-  // Все 4 незанятые койки в комнатах со статусом "Требует ремонта" и "Авария (ремонт)"
   const repM = bal.repairUnavailM;
   const repF = bal.repairUnavailF;
 
@@ -1072,7 +1248,7 @@ function buildForecastHtml() {
         </tr>
       </tbody>
     </table>
-    ${(balM < 0 || balF < 0) ? '<div style="margin-top:6px;font-size:11px;color:var(--red);">Нехватка мест по полу: задействуйте резервы выше или перераспределите квоты / комнаты во вкладке «Квоты и заявления».</div>' : ''}`;
+    ${(balM < 0 || balF < 0) ? '<div style="margin-top:6px;font-size:11px;color:var(--red);">Нехватка мест по полу: задействуйте резервы выше или перераспределите квоты во вкладке «Квоты и заявления».</div>' : ''}`;
 }
 
 function updateForecastField(field, val) {
@@ -1134,7 +1310,7 @@ function renderDashboard() {
         <div class="kpi-val" style="color:var(--blue)">${bal.occupied}</div>
       </div>
       <div class="kpi-cell">
-        <div><div class="kpi-label">Свободно (готово)</div><div class="kpi-sub">М: ${bal.readyFreeM} · Ж: ${bal.readyFreeF} (норма)</div></div>
+        <div><div class="kpi-label">Свободно (готово)</div><div class="kpi-sub">М: ${bal.readyFreeM} · Ж: ${bal.readyFreeF}</div></div>
         <div class="kpi-val" style="color:var(--green)">${bal.readyFree}</div>
       </div>
       <div class="kpi-cell">
@@ -1147,7 +1323,6 @@ function renderDashboard() {
       </div>
     </div>`;
 
-  // Экран Проректора: агрегированная стратегия без микроменеджмента
   if (isProrector) {
     const fm = getForecastMetrics();
     const facs = getFacultyList();
@@ -1156,7 +1331,7 @@ function renderDashboard() {
       <div class="page-header">
         <div>
           <h1 class="page-title">Стратегическая сводка и прогноз набора (Общежитие № 6, этаж 3)</h1>
-          <div class="page-desc">Агрегированный баланс фонда по факультетам, сводка рисков и моделирование приёма (пилотный контур: 3-й этаж из 734 мест корпуса)</div>
+          <div class="page-desc">Агрегированный баланс фонда по факультетам, сводка рисков и моделирование приёма</div>
         </div>
       </div>
       ${kpiHtml}
@@ -1221,13 +1396,13 @@ function renderDashboard() {
                 <span>Отсутствие в общежитии &gt;14 дней без предупреждения (п. 10.3)</span>
                 <span class="tag t-purple">${absentCount} чел.</span>
               </div>
-              <div class="act-row">
+              <div class="act-row act-row-clickable" onclick="goCheckMed()">
                 <span>Просрочена или не предоставлена флюорография (п. 2.3)</span>
-                <span class="tag t-amber">${medIssues} чел.</span>
+                <span class="tag t-amber">${medIssues} чел. →</span>
               </div>
-              <div class="act-row" style="background:#fffafa;">
-                <span>Выведено из оборота по заявкам АХЧ (${problemRooms.length} комн., из них 1 аварийная)</span>
-                <span class="tag t-red">${bal.repairUnavail} мест</span>
+              <div class="act-row act-row-clickable" style="background:#fffafa;" onclick="switchTab('repairs')">
+                <span>Выведено из оборота по заявкам АХЧ (${problemRooms.length} комн.)</span>
+                <span class="tag t-red">${bal.repairUnavail} мест →</span>
               </div>
             </div>
           </div>
@@ -1251,7 +1426,7 @@ function renderDashboard() {
                 <strong id="fcFemaleVal" style="text-align:right">+${state.forecastFemale} чел.</strong>
               </div>
               <div class="fc-checks">
-                <div style="font-weight:700;color:var(--muted);font-size:10.5px;text-transform:uppercase;margin-bottom:2px;">Учёт текущих обязательств и резервов (без двойного счёта):</div>
+                <div style="font-weight:700;color:var(--muted);font-size:10.5px;text-transform:uppercase;margin-bottom:2px;">Учёт текущих обязательств и резервов:</div>
                 <label>
                   <input type="checkbox" ${state.fcDeductApps ? 'checked' : ''} onchange="updateForecastField('fcDeductApps', this.checked)">
                   <span>Вычесть текущую очередь заявлений из ЛК (${state.applications.length} шт.): <b>−${fm.appsM} М / −${fm.appsF} Ж</b></span>
@@ -1262,7 +1437,7 @@ function renderDashboard() {
                 </label>
                 <label>
                   <input type="checkbox" ${state.fcUseGraduates ? 'checked' : ''} onchange="updateForecastField('fcUseGraduates', this.checked)">
-                  <span>Плановый выпуск (4 к. бак. / 2 к. маг., без дублей): <b>+${fm.gradM} М / +${fm.gradF} Ж</b></span>
+                  <span>Плановый выпуск (4 к. бак. / 2 к. маг.): <b>+${fm.gradM} М / +${fm.gradF} Ж</b></span>
                 </label>
                 <label>
                   <input type="checkbox" ${state.fcUseRepair ? 'checked' : ''} onchange="updateForecastField('fcUseRepair', this.checked)">
@@ -1276,7 +1451,6 @@ function renderDashboard() {
       </div>`;
   }
 
-  // Экран Дирекции и Деканата
   const rightTopPanel = `
     <div class="panel">
       <div class="panel-head">
@@ -1285,7 +1459,7 @@ function renderDashboard() {
       </div>
       <div class="panel-body" style="padding:0;">
         ${problemRooms.map(r => `
-          <div class="act-row ${r.condition === 'Авария (ремонт)' ? 'prio-red' : 'prio-amber'}">
+          <div class="act-row act-row-clickable ${r.condition === 'Авария (ремонт)' ? 'prio-red' : 'prio-amber'}" title="Нажмите, чтобы открыть полную карточку заявки АХЧ" onclick="openRepairModal('${r.id}')">
             <div>
               <strong>Комн. ${esc(r.number)}</strong> · <span style="color:var(--muted)">${esc(r.ticketNo || 'Без номера')}</span>
               <div style="font-size:11px;color:#374151">${esc(r.repairNote)}</div>
@@ -1293,12 +1467,13 @@ function renderDashboard() {
             <div style="text-align:right;white-space:nowrap;">
               ${condTag(r.condition)}
               <div style="font-size:10.5px;color:var(--muted);margin-top:2px;">до ${esc(r.repairDue || '—')}</div>
+              <div class="act-row-cue">Подробнее →</div>
             </div>
           </div>
         `).join('')}
-        <div class="act-row" style="background:#f9fafb;">
+        <div class="act-row act-row-clickable" style="background:#f9fafb;" onclick="goCheckMed()">
           <span style="font-size:11.5px;">Контроль флюорографии ${isDean ? 'по АВТФ ' : ''}(п. 2.3): просрочено или нет справки у <b>${medIssues} чел.</b></span>
-          <button class="btn btn-outline btn-xs" onclick="goCheckMed()">Проверить</button>
+          <button class="btn btn-outline btn-xs" onclick="event.stopPropagation(); goCheckMed()">Проверить</button>
         </div>
       </div>
     </div>`;
@@ -1310,7 +1485,7 @@ function renderDashboard() {
         <h1 class="page-title">Сводка и оперативные активности (Общежитие № 6, этаж 3)</h1>
         <div class="page-desc">${
           isDean ? 'Контур деканата АВТФ: показаны квота, студенты и сигналы вашего факультета' :
-          'Полный операционный контур дирекции студгородка и коменданта (баланс мест: 27 занято + 15 готово + 4 в ремонте = 46)'
+          'Операционный контур дирекции студгородка и коменданта'
         }</div>
       </div>
     </div>
@@ -1330,14 +1505,14 @@ function renderDashboard() {
             <tbody>
               ${risks.map(s => {
                 const r = getRoom(s.roomId);
-                return `<tr>
+                return `<tr class="row-link" onclick="openStudentModal('${s.id}')">
                   <td>
                     <strong>${esc(s.fio)}</strong>
                     <div style="font-size:11px;color:var(--muted)">${esc(s.faculty)} · ${esc(s.eduLevel)} ${s.course} к. · ${esc(s.phone)}</div>
                   </td>
                   <td><strong>${r ? esc(r.number) : '—'}</strong></td>
                   <td>${statusTag(s)}<div style="font-size:11px;color:var(--muted);margin-top:2px;">${esc(s.notes || '')}</div></td>
-                  <td style="text-align:right"><button class="btn btn-outline btn-xs" onclick="openStudentModal('${s.id}')">Открыть</button></td>
+                  <td style="text-align:right"><button class="btn btn-outline btn-xs" onclick="event.stopPropagation(); openStudentModal('${s.id}')">Открыть</button></td>
                 </tr>`;
               }).join('')}
             </tbody>
@@ -1383,7 +1558,7 @@ function renderSearch() {
     <div class="page-header">
       <div>
         <h1 class="page-title">Реестр и поиск проживающих</h1>
-        <div class="page-desc">${state.role === 'dean' ? 'Контур деканата АВТФ: показаны только студенты АВТФ (отсортировано по комнатам). Нажмите на строку для открытия карточки.' : 'Единый реестр жильцов (отсортировано по комнатам). Нажмите на любую строку, чтобы открыть карточку.'}</div>
+        <div class="page-desc">${state.role === 'dean' ? 'Контур деканата АВТФ: показаны только студенты АВТФ' : 'Единый реестр жильцов общежития'}</div>
       </div>
       <div style="display:flex;gap:6px;" class="no-print">
         <button class="btn btn-outline" onclick="exportStudentsCsv()">Выгрузить в Excel (.csv)</button>
@@ -1466,10 +1641,10 @@ function renderMap() {
   const blocks = [...new Set(state.rooms.map(r => r.block))];
 
   const subtitle = isDean
-    ? 'Контур деканата АВТФ: комнаты других факультетов обезличены по правилам защиты ПДн. Нажмите на комнату АВТФ для просмотра.'
+    ? 'Контур деканата АВТФ: нажмите на комнату вашего факультета для просмотра жильцов'
     : isProrector
-    ? 'Режим обзорного мониторинга заполняемости и технического состояния блоков (только просмотр).'
-    : 'Жилые блоки (п. 8.3). Нажмите на комнату для просмотра жильцов и управления состоянием.';
+    ? 'Обзор заполняемости и технического состояния жилых блоков этажа'
+    : 'Жилые блоки этажа (п. 8.3). Нажмите на комнату для просмотра жильцов и управления состоянием';
 
   return `
     <div class="breadcrumbs">Главная · Кампус и общежития · Общежитие № 6 · Этаж 3 · Карта этажа</div>
@@ -1491,9 +1666,9 @@ function renderMap() {
       ${blocks.map(bName => {
         const bRooms = state.rooms.filter(r => r.block === bName);
         const hasIssue = bRooms.some(r => r.condition !== 'Норма');
-        constRelevantRooms = isDean ? bRooms.filter(r => r.quotaTag === 'АВТФ') : bRooms;
-        const cap = constRelevantRooms.reduce((a, r) => a + r.capacity, 0);
-        const free = constRelevantRooms.reduce((a, r) => a + getReadyFreeBeds(r), 0);
+        const relevantRooms = isDean ? bRooms.filter(r => r.quotaTag === 'АВТФ') : bRooms;
+        const cap = relevantRooms.reduce((a, r) => a + r.capacity, 0);
+        const free = relevantRooms.reduce((a, r) => a + getReadyFreeBeds(r), 0);
         const blockBadgeText = isDean
           ? (cap > 0 ? `Своб. АВТФ: ${free}/${cap}` : 'Квота других фак.')
           : `Своб. (готово): ${free}/${cap}`;
@@ -1575,8 +1750,8 @@ function renderRepairs() {
   const desc = canEdit
     ? 'Учёт плановых и аварийных заявок АХЧ, сроков устранения и экстренное расселение жильцов (п. 2.9)'
     : isProrector
-    ? 'Сводка по выведенному из оборота жилому фонду и соблюдению сроков устранения неисправностей'
-    : 'Режим мониторинга по факультету: показаны комнаты в ремонте и проживающие в них студенты АВТФ';
+    ? 'Сводка по выведенному из оборота жилому фонду и срокам устранения неисправностей'
+    : 'Мониторинг комнат в ремонте и проживающих в них студентов факультета';
 
   return `
     <div class="breadcrumbs">Главная · Кампус и общежития · Общежитие № 6 · Этаж 3 · Ремонты и переселение</div>
@@ -1615,7 +1790,7 @@ function renderRepairs() {
                     return `<div><strong>${esc(formatShortName(s.fio))}</strong> <span style="color:var(--muted)">(${esc(s.group)})</span></div>`;
                   }).join('');
 
-              return `<tr>
+              return `<tr class="row-link" title="Нажмите, чтобы открыть карточку заявки АХЧ" onclick="openRepairModal('${r.id}')">
                 <td><strong>${esc(r.number)}</strong> <span style="color:var(--muted)">(${esc(r.block)}, ${esc(r.gender)}, ${esc(r.quotaTag)})</span></td>
                 <td><span class="tag t-gray">${esc(r.ticketNo || '—')}</span></td>
                 <td>${condTag(r.condition)}</td>
@@ -1628,7 +1803,7 @@ function renderRepairs() {
                   <td><strong>${esc(r.repairDue || 'Не задан')}</strong></td>
                 `}
                 <td>${occHtml}</td>
-                ${canEdit ? `<td class="no-print" style="text-align:right;white-space:nowrap;">
+                ${canEdit ? `<td class="no-print" style="text-align:right;white-space:nowrap;" onclick="event.stopPropagation()">
                   ${occ.length > 0 ? `<button class="btn btn-danger btn-xs" onclick="autoRelocateRoom('${r.id}')">Переселить (${occ.length})</button>` : ''}
                   <button class="btn btn-outline btn-xs" onclick="markRoomFixed('${r.id}')">Завершить</button>
                 </td>` : ''}
@@ -1687,7 +1862,7 @@ function buildAppRows() {
     const p = getAppPriority(a);
     const isRevision = a.appStatus === 'На доработке';
     const statusBadge = isRevision
-      ? `<div style="margin-top:2px;"><span class="tag t-amber">На доработке</span> <span style="font-size:10.5px;color:var(--muted)">${esc(a.reviewComment)}</span></div>`
+      ? `<div style="margin-top:3px;"><span class="tag t-amber">На доработке</span> <span style="font-size:11px;color:var(--muted)">${esc(a.reviewComment)}</span></div>`
       : '';
     const assignTitle = isRevision
       ? 'Недоступно: заявление возвращено на доработку (неполный пакет документов)'
@@ -1707,10 +1882,12 @@ function buildAppRows() {
       </td>
       <td>${renderBenefitsHtml(a)}</td>
       <td><span class="tag ${p.cls}">${p.label}</span></td>
-      ${canAssign ? `<td class="no-print" style="text-align:right;white-space:nowrap;">
-        <button class="btn btn-primary btn-xs" ${isRevision ? 'disabled' : ''} title="${esc(assignTitle)}" onclick="openAssignModal('${a.id}')">${state.role === 'dean' ? 'Направление' : 'Заселить'}</button>
-        <button class="btn btn-outline btn-xs" onclick="openAppReviewModal('${a.id}', 'revision')">На доработку</button>
-        <button class="btn btn-danger-outline btn-xs" onclick="openAppReviewModal('${a.id}', 'reject')">Отклонить</button>
+      ${canAssign ? `<td class="no-print" style="text-align:right;">
+        <div class="app-actions-stack">
+          <button class="btn btn-primary btn-xs" ${isRevision ? 'disabled' : ''} title="${esc(assignTitle)}" onclick="openAssignModal('${a.id}')">${state.role === 'dean' ? 'Направление' : 'Заселить'}</button>
+          <button class="btn btn-outline btn-xs" onclick="openAppReviewModal('${a.id}', 'revision')">На доработку</button>
+          <button class="btn btn-danger-outline btn-xs" onclick="openAppReviewModal('${a.id}', 'reject')">Отклонить</button>
+        </div>
       </td>` : ''}
     </tr>`;
   }).join('');
@@ -1732,17 +1909,15 @@ function renderQuotas() {
   }
 
   const desc = isProrector
-    ? 'Стратегическое управление квотами факультетов и мониторинг очереди заявлений из ЛК (режим просмотра заявок)'
+    ? 'Управление квотами факультетов и обзор очереди заявлений из ЛК'
     : isDean
-    ? 'Контур деканата АВТФ: квота факультета и выдача направлений по подтверждённым заявлениям (п. 5.2.1)'
+    ? 'Квота факультета АВТФ и выдача направлений по заявлениям из ЛК (п. 5.2.1)'
     : 'Контроль закреплённых квот этажа, проверка и обработка заявлений из ЛК (п. 2.3, 4.1.1, 4.2)';
 
   const rightHeaderBadge = isDean
     ? `Своб. АВТФ: ${bal.readyFree} (М:${bal.readyFreeM}, Ж:${bal.readyFreeF})`
     : `Своб. (готово): ${bal.readyFree} (М:${bal.readyFreeM}, Ж:${bal.readyFreeF})`;
 
-  // Панель перераспределения квот (комнат) для Проректора
-  const freeRoomsForTransfer = state.rooms.filter(r => getRoomOccupants(r.id).length === 0 && r.condition === 'Норма');
   const partiallyFreeRooms = state.rooms.filter(r => r.condition === 'Норма' && getReadyFreeBeds(r) > 0);
 
   return `
@@ -1750,7 +1925,7 @@ function renderQuotas() {
     <div class="print-only" style="margin-bottom:10px;">
       <div style="font-size:11px;color:#374151;">Новосибирский государственный технический университет (НГТУ НЭТИ)</div>
       <div style="font-size:15px;font-weight:700;margin-top:2px;">Список заявлений на предоставление места в Общежитии № 6 (ул. Блюхера, 32/1 · 3-й этаж)</div>
-      <div style="font-size:11px;color:#374151;margin-top:2px;">Контур: ${isDean ? 'Факультет АВТФ' : 'Общий реестр этажа'} · Дата формирования: 25.11.2026</div>
+      <div style="font-size:11px;color:#374151;margin-top:2px;">Контур: ${isDean ? 'Факультет АВТФ' : 'Общий реестр этажа'} · Дата формирования: ${new Date().toLocaleDateString('ru-RU')}</div>
     </div>
     <div class="page-header">
       <div><h1 class="page-title">Квоты факультетов и поступившие заявления</h1><div class="page-desc">${desc}</div></div>
@@ -1790,13 +1965,13 @@ function renderQuotas() {
             <table>
               <thead>
                 <tr>
-                  <th>№</th>
-                  <th>Рег. №</th>
-                  <th>ФИО / Факультет</th>
-                  <th>Уровень / Курс / Форма</th>
-                  <th>Льгота</th>
-                  <th>Приоритет</th>
-                  ${canAssign ? '<th class="no-print" style="text-align:right">Действия</th>' : ''}
+                  <th style="width:34px;">№</th>
+                  <th style="width:112px;">Рег. №</th>
+                  <th style="min-width:195px;">ФИО / Факультет</th>
+                  <th style="min-width:155px;">Уровень / Курс / Форма</th>
+                  <th style="min-width:115px;">Льгота</th>
+                  <th style="width:138px;">Приоритет</th>
+                  ${canAssign ? '<th class="no-print" style="width:124px;text-align:right;">Действия</th>' : ''}
                 </tr>
               </thead>
               <tbody id="appRows">${buildAppRows()}</tbody>
@@ -1824,11 +1999,12 @@ function renderQuotas() {
             <span class="tag t-green">${rightHeaderBadge}</span>
           </div>
           <div class="panel-body">
-            ${facs.map(f => {
+            ${facs.map((f, idx) => {
               const isOwn = isDean && f.name === 'АВТФ';
               const isForeign = isDean && f.name !== 'АВТФ';
               const pct = f.quota > 0 ? Math.min(100, Math.round((f.occupied / f.quota) * 100)) : 0;
-              return `<div style="margin-bottom:10px;${isOwn ? 'padding:7px 8px;background:var(--blue-bg);border:1px solid #bfd7fe;' : isForeign ? 'opacity:0.72;' : ''}">
+              const isLast = idx === facs.length - 1;
+              return `<div style="margin-bottom:${isLast ? '0' : '11px'};${isOwn ? 'padding:7px 8px;background:var(--blue-bg);border:1px solid #bfd7fe;' : isForeign ? 'opacity:0.74;' : ''}">
                 <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;gap:4px;">
                   <div>
                     <strong>${esc(f.name)}</strong>
@@ -1844,9 +2020,6 @@ function renderQuotas() {
                 <div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${pct>=95?'var(--red)':'var(--green)'}"></div></div>
               </div>`;
             }).join('')}
-            <div style="border-top:1px solid var(--border-light);padding-top:7px;font-size:11px;color:var(--muted);">
-              Баланс сходится по каждому факультету: <b>Занято + Свободно (готово) + Ремонт = Квота</b>.
-            </div>
           </div>
         </div>
 
@@ -1858,7 +2031,7 @@ function renderQuotas() {
           </div>
           <div class="panel-body">
             <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">
-              Передача комнаты с резервом мест в квоту другого факультета (синхронно обновляет карту этажа и баланс):
+              Передача комнаты с резервом мест в квоту другого факультета:
             </div>
             <div class="form-field">
               <label>Комната для передачи квоты:</label>
@@ -1883,6 +2056,77 @@ function renderQuotas() {
 }
 
 /* ================= MODALS ================= */
+function openRepairModal(roomId) {
+  const r = getRoom(roomId); if (!r) return;
+  const occ = getRoomOccupants(roomId);
+  const unavail = getRepairUnavailBeds(r);
+  const isDir = state.role === 'directorate';
+  const isDean = state.role === 'dean';
+  const isProrector = state.role === 'prorector';
+
+  const occBlock = occ.length === 0
+    ? '<p style="color:var(--muted);font-size:12px;">В комнате сейчас никто не проживает.</p>'
+    : occ.map(s => {
+        if (isDean && s.faculty !== 'АВТФ') {
+          return `<div class="act-row" style="border:1px solid var(--border-light);margin-bottom:4px;">
+            <div>Студент (${esc(s.faculty)}) — персональные данные скрыты</div>
+          </div>`;
+        }
+        if (isProrector) {
+          return `<div class="act-row" style="border:1px solid var(--border-light);margin-bottom:4px;">
+            <div>Проживающий (${esc(s.faculty)}, ${esc(s.eduLevel)} ${s.course} к.)</div>
+          </div>`;
+        }
+        return `<div class="act-row" style="border:1px solid var(--border-light);margin-bottom:4px;">
+          <div>
+            <strong>${esc(s.fio)}</strong> · <span style="color:var(--muted)">${esc(s.faculty)}, ${esc(s.group)} · ${esc(s.phone)}</span>
+            <div style="margin-top:2px;">${statusTag(s)}</div>
+          </div>
+          <button class="btn btn-outline btn-xs" onclick="openStudentModal('${s.id}')">Карточка</button>
+        </div>`;
+      }).join('');
+
+  document.getElementById('modalBody').innerHTML = `
+    <div class="modal-top">
+      <div>
+        <h3 style="font-size:15px">Заявка АХЧ ${esc(r.ticketNo || '—')} · Комната ${esc(r.number)}</h3>
+        <div style="margin-top:3px">
+          ${condTag(r.condition)}
+          <span class="tag t-gray">${esc(r.block)} · Пол: ${r.gender}</span>
+          <span class="tag t-blue">Квота: ${esc(r.quotaTag)}</span>
+        </div>
+      </div>
+      <button class="close-x" onclick="closeModal()">×</button>
+    </div>
+    <div class="info-grid">
+      <div><span>Номер заявки АХЧ</span><strong>${esc(r.ticketNo || 'Не присвоен')}</strong></div>
+      <div><span>Плановый срок устранения</span><strong>${esc(r.repairDue || 'Не задан')}</strong></div>
+      <div><span>Ответственный мастер</span><strong>${esc(r.repairMaster || 'Не назначен')}</strong></div>
+      <div><span>Фонд комнаты / Выведено мест</span><strong>${r.capacity} мест · выведено: ${unavail}</strong></div>
+    </div>
+    <div class="act-row ${r.condition === 'Авария (ремонт)' ? 'prio-red' : 'prio-amber'}" style="margin-bottom:10px;border:1px solid #f3d098;">
+      <div>
+        <div style="font-size:10.5px;color:var(--muted);font-weight:700;text-transform:uppercase;">Описание неисправности:</div>
+        <div style="margin-top:2px;"><strong>${esc(r.repairNote || 'Описание не указано')}</strong></div>
+      </div>
+    </div>
+    <div style="margin-bottom:10px;">
+      <strong style="font-size:12px;display:block;margin-bottom:6px;">Проживающие в комнате (${occ.length} из ${r.capacity}):</strong>
+      ${occBlock}
+    </div>
+    <div style="border-top:1px solid var(--border-light);padding-top:10px;display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;">
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        ${(isDir && occ.length > 0) ? `<button class="btn btn-danger btn-xs" onclick="autoRelocateRoom('${r.id}'); closeModal();">Переселить жильцов (${occ.length})</button>` : ''}
+        ${isDir ? `<button class="btn btn-primary btn-xs" onclick="markRoomFixed('${r.id}')">Завершить ремонт («Норма»)</button>` : ''}
+      </div>
+      <div style="display:flex;gap:6px;">
+        ${!(isDean && r.quotaTag !== 'АВТФ') ? `<button class="btn btn-outline btn-xs" onclick="openRoomModal('${r.id}')">Карточка комнаты</button>` : ''}
+        <button class="btn btn-outline btn-xs" onclick="closeModal()">Закрыть</button>
+      </div>
+    </div>`;
+  document.getElementById('modalBackdrop').classList.add('open');
+}
+
 function openRegulationsModal() {
   document.getElementById('modalBody').innerHTML = `
     <div class="modal-top">
@@ -2141,7 +2385,6 @@ function openAssignModal(appId) {
   const p = getAppPriority(a);
   const isDean = state.role === 'dean';
 
-  // Сортируем доступные комнаты: сначала полностью исправные блоки, в конце — блоки с ремонтом в соседних комнатах
   const avail = state.rooms
     .filter(r => r.gender === a.gender && r.condition === 'Норма' && getReadyFreeBeds(r) > 0 && (!isDean || r.quotaTag === 'АВТФ'))
     .sort((r1, r2) => {
