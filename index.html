@@ -39,7 +39,7 @@
       line-height: 1.35;
     }
 
-    /* Top utility bar — fixed single-line layout on desktop without jumping */
+    /* Top utility bar */
     .utility-bar {
       border-bottom: 1px solid var(--border-light);
       background: var(--white);
@@ -97,7 +97,7 @@
       cursor: pointer;
     }
     .ctx-select { font-weight: 600; }
-    #dormSelect { max-width: 315px; text-overflow: ellipsis; }
+    #dormSelect { max-width: 335px; text-overflow: ellipsis; }
 
     /* Compact Header */
     .site-header {
@@ -300,28 +300,30 @@
     .benefit-multi-btn {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      padding: 2px 7px;
+      gap: 5px;
+      padding: 1px 6px;
       font-size: 11px;
       font-weight: 600;
       background: var(--blue-bg);
       color: #1d4ed8;
-      border: 1px solid #93c5fd;
+      border: 1px solid #bfd7fe;
       cursor: pointer;
       white-space: nowrap;
       transition: background 0.12s, border-color 0.12s;
     }
     .benefit-multi-btn:hover,
     .benefit-multi-wrap:focus-within .benefit-multi-btn {
-      background: #dbeafe;
-      border-color: var(--blue);
+      background: #e0ecff;
+      border-color: #93c5fd;
     }
     .benefit-multi-count {
-      background: var(--blue);
-      color: #fff;
+      background: #dbeafe;
+      color: #1e40af;
+      border: 1px solid #bfdbfe;
       font-size: 10px;
       font-weight: 700;
       padding: 0 4px;
+      line-height: 1.25;
     }
     .benefit-popover {
       display: none;
@@ -381,6 +383,10 @@
     }
     .input:focus, .select:focus { outline: 1px solid var(--green); border-color: var(--green); }
     .input-grow { flex: 1; min-width: 190px; }
+    .date-mask-input {
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.3px;
+    }
 
     table { width: 100%; border-collapse: collapse; }
     th, td {
@@ -590,7 +596,8 @@
       <option value="dorm7">Общежитие № 7 (ул. Космическая, 21/1 · ФЭН/ФПМИ/ФТФ · 954 места)</option>
       <option value="dorm8">Общежитие № 8 (ул. Немировича-Данченко, 138 · Маг./Асп. · 250 мест)</option>
       <option value="dorm9">Общежитие № 9 (ул. Б. Хмельницкого, 7 · ФГО/ИСТ · 154 места)</option>
-      <option value="opk">ОПК (ул. Блюхера, 32/1 · Иностранцы · 205 мест)</option>
+      <option value="dorm10">Общежитие № 10 (ул. Немировича-Данченко, 136/1 · Высокобалльники / отличники · 480 мест)</option>
+      <option value="opk">ОПК (ул. Блюхера, 32/1 · 205 мест)</option>
     </select>
     <select id="floorSelect" class="ctx-select" title="Выбор этажа">
       <option value="1">1-й этаж</option>
@@ -670,19 +677,20 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const STORAGE_KEY = 'nstu_dorm6_wide_v5';
+const STORAGE_KEY = 'nstu_dorm6_wide_v6';
 
 const DORM_CATALOG = {
-  dorm6: { name: 'Общежитие № 6', addr: 'ул. Блюхера, 32/1', cap: 734, prio: 'АВТФ, квота ЦМО (60 мест)' },
-  dorm1: { name: 'Общежитие № 1', addr: 'пр. Карла Маркса, 37', cap: 458, prio: 'РЭФ' },
-  dorm2: { name: 'Общежитие № 2', addr: 'пр. Карла Маркса, 33', cap: 314, prio: 'ФГО' },
-  dorm3: { name: 'Общежитие № 3', addr: 'ул. Космическая, 21', cap: 388, prio: 'МТФ' },
-  dorm4: { name: 'Общежитие № 4', addr: 'ул. Геодезическая, 2', cap: 369, prio: 'ФМА' },
-  dorm5: { name: 'Общежитие № 5', addr: 'ул. Блюхера, 30/1', cap: 586, prio: 'ФБ, ФЛА' },
-  dorm7: { name: 'Общежитие № 7', addr: 'ул. Космическая, 21/1', cap: 954, prio: 'ФЭН, ФПМИ, ФТФ, ИСТ, семейный фонд' },
-  dorm8: { name: 'Общежитие № 8', addr: 'ул. Немировича-Данченко, 138', cap: 250, prio: 'Магистранты, аспиранты, сотрудники' },
-  dorm9: { name: 'Общежитие № 9', addr: 'ул. Б. Хмельницкого, 7', cap: 154, prio: 'ФГО, ИСТ (СПО)' },
-  opk:   { name: 'ОПК', addr: 'ул. Блюхера, 32/1', cap: 205, prio: 'Иностранные обучающиеся (дальнее зарубежье)' }
+  dorm6:  { name: 'Общежитие № 6', addr: 'ул. Блюхера, 32/1', cap: 734, prio: 'АВТФ, квота ЦМО (60 мест)' },
+  dorm1:  { name: 'Общежитие № 1', addr: 'пр. Карла Маркса, 37', cap: 458, prio: 'РЭФ' },
+  dorm2:  { name: 'Общежитие № 2', addr: 'пр. Карла Маркса, 33', cap: 314, prio: 'ФГО' },
+  dorm3:  { name: 'Общежитие № 3', addr: 'ул. Космическая, 21', cap: 388, prio: 'МТФ' },
+  dorm4:  { name: 'Общежитие № 4', addr: 'ул. Геодезическая, 2', cap: 369, prio: 'ФМА' },
+  dorm5:  { name: 'Общежитие № 5', addr: 'ул. Блюхера, 30/1', cap: 586, prio: 'ФБ, ФЛА' },
+  dorm7:  { name: 'Общежитие № 7', addr: 'ул. Космическая, 21/1', cap: 954, prio: 'ФЭН, ФПМИ, ФТФ, ИСТ, семейный фонд' },
+  dorm8:  { name: 'Общежитие № 8', addr: 'ул. Немировича-Данченко, 138', cap: 250, prio: 'Магистранты, аспиранты, сотрудники' },
+  dorm9:  { name: 'Общежитие № 9', addr: 'ул. Б. Хмельницкого, 7', cap: 154, prio: 'ФГО, ИСТ (СПО)' },
+  dorm10: { name: 'Общежитие № 10', addr: 'ул. Немировича-Данченко, 136/1', cap: 480, prio: 'Высокобалльники и отличники учёбы' },
+  opk:    { name: 'ОПК', addr: 'ул. Блюхера, 32/1', cap: 205, prio: 'Общежитие повышенной комфортности' }
 };
 
 const INITIAL_STATE = {
@@ -802,6 +810,14 @@ function resetDemo() {
 function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 }
+function pluralRu(n, forms) {
+  const abs = Math.abs(n) % 100;
+  const n1 = abs % 10;
+  if (abs > 10 && abs < 20) return forms[2];
+  if (n1 > 1 && n1 < 5) return forms[1];
+  if (n1 === 1) return forms[0];
+  return forms[2];
+}
 function formatShortName(fio) {
   const p = String(fio ?? '').trim().split(/\s+/);
   if (p.length >= 3) return `${p[0]} ${p[1][0]}.${p[2][0]}.`;
@@ -809,15 +825,131 @@ function formatShortName(fio) {
   return p[0] || '';
 }
 
+/* ================= DATE MASK (ДД.ММ.20ГГ) ================= */
+const DATE20_TEMPLATE = '__.__.20__';
+const DATE20_SLOTS = [0, 1, 3, 4, 8, 9];
+
+function onDate20Focus(el) {
+  if (!el.value) {
+    el.value = DATE20_TEMPLATE;
+  }
+  const firstEmpty = DATE20_SLOTS.find(i => el.value[i] === '_');
+  const pos = firstEmpty !== undefined ? firstEmpty : 10;
+  requestAnimationFrame(() => el.setSelectionRange(pos, pos));
+}
+
+function onDate20Blur(el) {
+  if (el.value === DATE20_TEMPLATE) {
+    el.value = '';
+  }
+}
+
+function onDate20KeyDown(e, el) {
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  const key = e.key;
+  if (['Tab', 'ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(key)) return;
+
+  let chars = (el.value && el.value.length === 10 ? el.value : DATE20_TEMPLATE).split('');
+  const selStart = el.selectionStart ?? 0;
+  const selEnd = el.selectionEnd ?? selStart;
+
+  if (key === 'Backspace') {
+    e.preventDefault();
+    if (selEnd > selStart) {
+      DATE20_SLOTS.forEach(i => { if (i >= selStart && i < selEnd) chars[i] = '_'; });
+      el.value = chars.join('');
+      const firstSlot = DATE20_SLOTS.find(i => i >= selStart) ?? 0;
+      el.setSelectionRange(firstSlot, firstSlot);
+      return;
+    }
+    const prevSlot = [...DATE20_SLOTS].reverse().find(i => i < selStart);
+    if (prevSlot !== undefined) {
+      chars[prevSlot] = '_';
+      el.value = chars.join('');
+      el.setSelectionRange(prevSlot, prevSlot);
+    }
+    return;
+  }
+
+  if (key === 'Delete') {
+    e.preventDefault();
+    if (selEnd > selStart) {
+      DATE20_SLOTS.forEach(i => { if (i >= selStart && i < selEnd) chars[i] = '_'; });
+      el.value = chars.join('');
+      const firstSlot = DATE20_SLOTS.find(i => i >= selStart) ?? 0;
+      el.setSelectionRange(firstSlot, firstSlot);
+      return;
+    }
+    const curSlot = DATE20_SLOTS.find(i => i >= selStart);
+    if (curSlot !== undefined) {
+      chars[curSlot] = '_';
+      el.value = chars.join('');
+      el.setSelectionRange(curSlot, curSlot);
+    }
+    return;
+  }
+
+  if (/^\d$/.test(key)) {
+    e.preventDefault();
+    if (selEnd > selStart) {
+      DATE20_SLOTS.forEach(i => { if (i >= selStart && i < selEnd) chars[i] = '_'; });
+    }
+    const targetSlot = DATE20_SLOTS.find(i => i >= selStart);
+    if (targetSlot !== undefined) {
+      chars[targetSlot] = key;
+      el.value = chars.join('');
+      const nextSlot = DATE20_SLOTS.find(i => i > targetSlot);
+      const nextPos = nextSlot !== undefined ? nextSlot : 10;
+      el.setSelectionRange(nextPos, nextPos);
+    }
+    return;
+  }
+
+  e.preventDefault();
+}
+
+function onDate20Paste(e, el) {
+  e.preventDefault();
+  const pasted = (e.clipboardData || window.clipboardData).getData('text') || '';
+  const digits = pasted.replace(/\D/g, '');
+  if (!digits) return;
+  // Поддержка вставки как ДДММ20ГГ (8 цифр), так и ДДММГГ (6 цифр)
+  const six = (digits.length >= 8 && digits.slice(4, 6) === '20')
+    ? digits.slice(0, 4) + digits.slice(6, 8)
+    : digits.slice(0, 6);
+  let chars = DATE20_TEMPLATE.split('');
+  for (let idx = 0; idx < six.length && idx < DATE20_SLOTS.length; idx++) {
+    chars[DATE20_SLOTS[idx]] = six[idx];
+  }
+  el.value = chars.join('');
+  const nextSlot = DATE20_SLOTS.find(i => el.value[i] === '_');
+  const pos = nextSlot !== undefined ? nextSlot : 10;
+  el.setSelectionRange(pos, pos);
+}
+
+function parseDate20Value(rawVal) {
+  const v = (rawVal || '').trim();
+  if (!v || v === DATE20_TEMPLATE) return { status: 'empty', value: '' };
+  const m = v.match(/^(\d{2})\.(\d{2})\.(20\d{2})$/);
+  if (!m) return { status: 'incomplete', value: v };
+  const dd = Number(m[1]);
+  const mm = Number(m[2]);
+  const yyyy = Number(m[3]);
+  const dt = new Date(yyyy, mm - 1, dd);
+  if (mm < 1 || mm > 12 || dd < 1 || dt.getFullYear() !== yyyy || dt.getMonth() !== mm - 1 || dt.getDate() !== dd) {
+    return { status: 'invalid', value: v };
+  }
+  return { status: 'ok', value: v };
+}
+
 /* ================= ACADEMIC WEEK CALCULATION ================= */
 function getAcademicWeekInfo(now = new Date()) {
   const y = now.getFullYear();
-  const m = now.getMonth(); // 0 = Jan, 8 = Sept
+  const m = now.getMonth();
   const todayMidnight = new Date(y, m, now.getDate());
   const dateStr = todayMidnight.toLocaleDateString('ru-RU');
 
   if (m >= 8) {
-    // Осенний семестр: 1-я неделя начинается в понедельник недели 1 сентября
     const sept1 = new Date(y, 8, 1);
     const shift = (sept1.getDay() + 6) % 7;
     const week1Mon = new Date(y, 8, 1 - shift);
@@ -825,7 +957,6 @@ function getAcademicWeekInfo(now = new Date()) {
     return { text: `${week} учебная неделя`, title: `Осенний семестр · ${dateStr}` };
   }
   if (m >= 1 && m <= 5) {
-    // Весенний семестр: старт с понедельника недели 9 февраля
     const feb9 = new Date(y, 1, 9);
     const shift = (feb9.getDay() + 6) % 7;
     const week1Mon = new Date(y, 1, 9 - shift);
@@ -1130,7 +1261,8 @@ function getFilteredApps() {
     const matchBenefit =
       state.appBenefitFilter === 'all' ||
       (state.appBenefitFilter === 'yes' && bens.length > 0) ||
-      (state.appBenefitFilter === 'no' && bens.length === 0);
+      (state.appBenefitFilter === 'no' && bens.length === 0) ||
+      bens.includes(state.appBenefitFilter);
     const matchPrio = state.appPriorityFilter === 'all' || p.code === state.appPriorityFilter;
     return matchQ && matchBenefit && matchPrio;
   });
@@ -1839,7 +1971,8 @@ function renderRepairs() {
           </div>
           <div class="form-field" style="margin-bottom:0;width:155px;">
             <label>Крайний срок устранения:</label>
-            <input id="repDueInp" class="input" style="width:100%;" placeholder="ДД.ММ.ГГГГ (30.11.2026)">
+            <input id="repDueInp" class="input date-mask-input" style="width:100%;" maxlength="10" inputmode="numeric" placeholder="ДД.ММ.20ГГ"
+              onfocus="onDate20Focus(this)" onblur="onDate20Blur(this)" onkeydown="onDate20KeyDown(event, this)" onpaste="onDate20Paste(event, this)">
           </div>
           <button class="btn btn-amber" onclick="submitRepairTicket()">Оформить заявку</button>
         </div>
@@ -1908,6 +2041,12 @@ function renderQuotas() {
     ];
   }
 
+  const specificBenefits = [
+    'Сирота',
+    'Инвалид II гр.',
+    'Ветеран боевых действий'
+  ];
+
   const desc = isProrector
     ? 'Управление квотами факультетов и обзор очереди заявлений из ЛК'
     : isDean
@@ -1947,6 +2086,9 @@ function renderQuotas() {
               <option value="all" ${state.appBenefitFilter==='all'?'selected':''}>Льготы: все</option>
               <option value="yes" ${state.appBenefitFilter==='yes'?'selected':''}>Только льготники</option>
               <option value="no" ${state.appBenefitFilter==='no'?'selected':''}>Без льгот</option>
+              <optgroup label="Конкретная льгота">
+                ${specificBenefits.map(b => `<option value="${esc(b)}" ${state.appBenefitFilter===b?'selected':''}>${esc(b)}</option>`).join('')}
+              </optgroup>
             </select>
             <select class="select" onchange="state.appPriorityFilter=this.value; saveState(); document.getElementById('appRows').innerHTML=buildAppRows();">
               <option value="all" ${state.appPriorityFilter==='all'?'selected':''}>Приоритет: любой</option>
@@ -2027,7 +2169,6 @@ function renderQuotas() {
         <div class="panel">
           <div class="panel-head">
             <span>Перераспределение квот между факультетами</span>
-            <span class="tag t-blue">Рычаг проректората</span>
           </div>
           <div class="panel-body">
             <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">
@@ -2202,6 +2343,9 @@ function openStudentModal(id) {
   if (s.medExpired) missingReasons.push('не предоставлена / просрочена справка ФЛГ (п. 2.3)');
   if (hasUnpaid) missingReasons.push('не подтверждена оплата проживания');
 
+  const hiddenVerb = pluralRu(repairExcluded.length, ['Скрыта', 'Скрыты', 'Скрыто']);
+  const hiddenNoun = pluralRu(repairExcluded.length, ['комната', 'комнаты', 'комнат']);
+
   document.getElementById('modalBody').innerHTML = `
     <div class="modal-top">
       <div>
@@ -2241,7 +2385,7 @@ function openStudentModal(id) {
           ${repairExcluded.length ? `
           <label style="display:flex;align-items:center;gap:6px;margin-top:6px;font-size:11px;color:var(--muted);cursor:pointer;">
             <input type="checkbox" onchange="toggleRepairMoveRooms('${s.id}', this.checked)">
-            <span>Скрыто комнат со статусом «Требует ремонта»: ${repairExcluded.map(x => x.number).join(', ')} (показать принудительно)</span>
+            <span>${hiddenVerb} ${hiddenNoun} со статусом «Требует ремонта»: ${repairExcluded.map(x => x.number).join(', ')} (показать в списке)</span>
           </label>` : ''}
         ` : '<span style="color:var(--muted);font-size:12px">Нет свободных комнат подходящего пола</span>'}
       </div>
@@ -2345,14 +2489,15 @@ function openRoomModal(roomId) {
           <label>Причина неисправности (обязательно):</label>
           <input id="rmCondReasonInp" class="input" style="width:100%;" placeholder="Укажите причину неисправности / аварии">
         </div>
-        <div style="display:grid;grid-template-columns:1fr 140px;gap:8px;">
+        <div style="display:grid;grid-template-columns:1fr 145px;gap:8px;">
           <div class="form-field">
             <label>Ответственный мастер:</label>
             <input id="rmCondMasterInp" class="input" style="width:100%;" placeholder="ФИО и профиль мастера">
           </div>
           <div class="form-field">
             <label>Срок устранения:</label>
-            <input id="rmCondDueInp" class="input" style="width:100%;" placeholder="ДД.ММ.ГГГГ">
+            <input id="rmCondDueInp" class="input date-mask-input" style="width:100%;" maxlength="10" inputmode="numeric" placeholder="ДД.ММ.20ГГ"
+              onfocus="onDate20Focus(this)" onblur="onDate20Blur(this)" onkeydown="onDate20KeyDown(event, this)" onpaste="onDate20Paste(event, this)">
           </div>
         </div>
         <label id="roomCondRelocWrap" style="display:none;align-items:center;gap:6px;font-size:11.5px;margin-bottom:8px;cursor:pointer;">
@@ -2546,7 +2691,8 @@ function confirmRoomCondChange(roomId) {
   const cond = document.getElementById('roomCondTargetVal').value;
   const reason = document.getElementById('rmCondReasonInp').value.trim();
   const master = document.getElementById('rmCondMasterInp').value.trim() || 'Дежурный мастер АХЧ';
-  const due = document.getElementById('rmCondDueInp').value.trim() || '05.12.2026';
+  const dueEl = document.getElementById('rmCondDueInp');
+  const parsedDue = parseDate20Value(dueEl.value);
   const autoReloc = document.getElementById('rmCondAutoRelocChk')?.checked;
 
   if (!reason) {
@@ -2554,6 +2700,12 @@ function confirmRoomCondChange(roomId) {
     document.getElementById('rmCondReasonInp').focus();
     return;
   }
+  if (parsedDue.status === 'incomplete' || parsedDue.status === 'invalid') {
+    showToast('Введите корректную дату в формате ДД.ММ.20ГГ');
+    dueEl.focus();
+    return;
+  }
+  const due = parsedDue.status === 'ok' ? parsedDue.value : '05.12.2026';
   setRoomCond(roomId, cond, reason, master, due);
   if (cond === 'Авария (ремонт)' && autoReloc) {
     autoRelocateRoom(roomId);
@@ -2565,12 +2717,19 @@ function submitRepairTicket() {
   const cond = document.getElementById('repCondSel').value;
   const note = document.getElementById('repNoteInp').value.trim();
   const master = document.getElementById('repMasterInp').value.trim() || 'Дежурный мастер АХЧ';
-  const due = document.getElementById('repDueInp').value.trim() || '05.12.2026';
+  const dueEl = document.getElementById('repDueInp');
+  const parsedDue = parseDate20Value(dueEl.value);
   if (!note) {
     showToast('Укажите причину неисправности!');
     document.getElementById('repNoteInp').focus();
     return;
   }
+  if (parsedDue.status === 'incomplete' || parsedDue.status === 'invalid') {
+    showToast('Введите корректную дату в формате ДД.ММ.20ГГ');
+    dueEl.focus();
+    return;
+  }
+  const due = parsedDue.status === 'ok' ? parsedDue.value : '05.12.2026';
   const r = getRoom(id);
   r.condition = cond;
   r.repairNote = note;
